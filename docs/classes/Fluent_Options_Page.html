@@ -1,0 +1,2164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                    </ul>
+                    </li>
+                    <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">9</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1664334549"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1664334549" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Fluent_Options_Page.html">Fluent_Options_Page</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options_Demo.html">Fluent_Options_Demo</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Page.html">Fluent_Page</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Shortcodes.html">Fluent_Shortcodes</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options_User.html">Fluent_Options_User</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options_Meta.html">Fluent_Options_Meta</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Color_Field.html">Fluent_Color_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Radio_Field.html">Fluent_Radio_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Checkbox_Field.html">Fluent_Checkbox_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Custom_Field.html">Fluent_Custom_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Media_Field.html">Fluent_Media_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Textarea_Field.html">Fluent_Textarea_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Info_Field.html">Fluent_Info_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Password_Field.html">Fluent_Password_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Group_Field.html">Fluent_Group_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Date_Field.html">Fluent_Date_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Switch_Field.html">Fluent_Switch_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Editor_Field.html">Fluent_Editor_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Text_Field.html">Fluent_Text_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Gallery_Field.html">Fluent_Gallery_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Select_Field.html">Fluent_Select_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Number_Field.html">Fluent_Number_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Email_Field.html">Fluent_Email_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Field.html">Fluent_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Url_Field.html">Fluent_Url_Field</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Base.html">Fluent_Base</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options.html">Fluent_Options</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options_Taxonomy.html">Fluent_Options_Taxonomy</a></li>
+                                                    <li class="class"><a href="../classes/Fluent_Options_Media.html">Fluent_Options_Media</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>Fluent_Options_Page</h1>
+                    <p><em>Fluent_Options_Page. Create and stores fields and sections.</em></p>
+                    
+
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Fluent_Options.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_format_option" class="">format_option()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_load_page" class="">load_page()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_settings_updated" class="">settings_updated()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_settings_default_updated" class="">settings_default_updated()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_render_page" class="">render_page()</a><br />
+                                                                    <a href="../classes/Fluent_Options_Page.html#method_save_box_content" class="">save_box_content()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_register_field_type" class="">register_field_type()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_setup_meta_box_titles" class="">setup_meta_box_titles()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_add_screen_settings" class="">add_screen_settings()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_save_screen_settings" class="">save_screen_settings()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_remove_box_padding" class="">remove_box_padding()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_box_content_dev" class="">box_content_dev()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_box_content" class="">box_content()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Fluent_Options_Page.html#property_page" class="">$page</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#property_field_types" class="">$field_types</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#property_sections" class="">$sections</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#property_options" class="">$options</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#property_domain" class="">$domain</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#property_url" class="">$url</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#property_args" class="">$args</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Fluent_Options.html#method_prepare_sections" class="">prepare_sections()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_section_args" class="">section_args()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_field_args" class="">field_args()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_prepare_fields" class="">prepare_fields()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_get_options_schema" class="">get_options_schema()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_get_default_values" class="">get_default_values()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_remove_clones" class="">remove_clones()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_load_assets" class="">load_assets()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_get_required_js" class="">get_required_js()</a><br />
+                                                                    <a href="../classes/Fluent_Options.html#method_prepare_meta_box_titles" class="">prepare_meta_box_titles()</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#method_parse_args" class="">parse_args()</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#method_provide" class="">provide()</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#method_random_string" class="">random_string()</a><br />
+                                                                    <a href="../classes/Fluent_Base.html#method_guid" class="">guid()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Fluent_Base.html#method_default_args" class="">default_args()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Fluent_Options.html#property_added_nonce_field" class="">$added_nonce_field</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/classes.class.fluent-options-page.php.html"><div class="path-wrapper">classes/class.fluent-options-page.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Fluent</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                        <div class="namespace-wrapper"><a href="../classes/Fluent_Base.html">\Fluent_Base</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/Fluent_Options.html">\Fluent_Options</a></div>
+                                                                                                    <div class="namespace-wrapper">\Fluent_Options_Page</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                todo
+                            </th>
+                            <td>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_page" name="property_page" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$page</h3>
+                <pre class="signature">$page</pre>
+                <p><em></em></p>
+                
+
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_field_types" name="property_field_types" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$field_types</h3>
+                <pre class="signature">$field_types : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; static definitions of field types. Can be registered, editted and removed.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_sections" name="property_sections" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$sections</h3>
+                <pre class="signature">$sections : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; conatins all the section and field data.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_options" name="property_options" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$options</h3>
+                <pre class="signature">$options : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; store context specific data in this class property. Will negate the need to use get_***                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_version" name="property_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$version</h3>
+                <pre class="signature">$version : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Class version.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_domain" name="property_domain" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$domain</h3>
+                <pre class="signature">$domain : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; Class text domain.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_url" name="property_url" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$url</h3>
+                <pre class="signature">$url : string</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                &mdash; fluent url.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_args" name="property_args" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$args</h3>
+                <pre class="signature">$args : array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                array
+                &mdash; Class args to be run attached after &lt;code&gt;parse_args&lt;/code&gt;.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_added_nonce_field" name="property_added_nonce_field" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$added_nonce_field</h3>
+                <pre class="signature">$added_nonce_field : boolean</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                boolean
+                &mdash; used during metabox creation to decide when we should output the security nonce.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(array <span class="argument">$args</span>, array <span class="argument">$sections</span>) : \none</pre>
+                <p><em>__construct() parse arguments supplied, setup framework options class.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$args</td>
+                                <td><p>framework setup arguments. Used to change some base settings for the options including context.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$sections</td>
+                                <td><p>the sections an fields to be used.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_format_option" name="method_format_option" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">format_option()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">format_option(array <span class="argument">$value</span>) : array</pre>
+                <p><em>Attached to the &lt;code&gt;get_option_{$option_name}&lt;/code&gt; filter this function merges the value blueprint with the actual data ensuring all keys are set.</em></p>
+                <p>Also uses wp_unslash to remove slashes from values.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$value</td>
+                                <td><p>data supplied from the database.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>Fluent_Options::parse_args();</dd>
+                                            <dd>Fluent_Options::get_options_schema();</dd>
+                                            <dd>wp_unslash();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_load_page" name="method_load_page" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">load_page()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load_page(object <span class="argument">$page_object</span>) : \none</pre>
+                <p><em>Fires events on the &lt;code&gt;load_page-{$page-hook}&lt;/code&gt; hook point to register/enqueue styles/javascript.</em></p>
+                <p>Save the page options. Register metaboxes and screen options.
+It also adds filters to the metaboxes which help remove the padding applied by WordPress.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$page_object</td>
+                                <td><p>Fluent_Page instance.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>isset();</dd>
+                                            <dd>check_admin_refferer();</dd>
+                                            <dd>update_option();</dd>
+                                            <dd>add_screen_option();</dd>
+                                            <dd>get_option();</dd>
+                                            <dd>add_action();</dd>
+                                            <dd>do_action();</dd>
+                                            <dd>add_filter();</dd>
+                                            <dd>wp_enqueue_style();</dd>
+                                            <dd>wp_enqueue_script();</dd>
+                                            <dd>wp_localize_script();</dd>
+                                            <dd>add_meta_box();</dd>
+                                            <dd>time();</dd>
+                                            <dd>Fluent_Options::prepare_sections();</dd>
+                                            <dd>Fluent_Options::get_default_values();</dd>
+                                            <dd>Fluent_Options::remove_clones();</dd>
+                                            <dd>Fluent_Options::provide();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_settings_updated" name="method_settings_updated" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">settings_updated()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">settings_updated() : \none</pre>
+                <p><em>Display a settings updated notice on the &lt;code&gt;admin_notices&lt;/code&gt; action.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_settings_default_updated" name="method_settings_default_updated" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">settings_default_updated()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">settings_default_updated() : \none</pre>
+                <p><em>Display a settings updated message when restire defaults is clicked.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_render_page" name="method_render_page" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">render_page()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">render_page(object <span class="argument">$page_object</span>) : \none</pre>
+                <p><em>Renders the options page if $context is page. Hooked onto the Fluent_Page render action.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object</td>
+                                <td>$page_object</td>
+                                <td><p>Fluent_Page instance</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>get_admin_page_title();</dd>
+                                            <dd>wp_nonce_field();</dd>
+                                            <dd>get_current_screen();</dd>
+                                            <dd>do_meta_boxes();</dd>
+                                            <dd>Fluent_Options::prepare_meta_box_titles();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save_box_content" name="method_save_box_content" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save_box_content()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save_box_content() : \none</pre>
+                <p><em>Display the Save Options meta box on options pages.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                                            <dt>Uses</dt>
+                                                                <dd>get_option();</dd>
+                                            <dd>date();</dd>
+                                            <dd>get_submit_button();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_register_field_type" name="method_register_field_type" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">register_field_type()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">register_field_type(array <span class="argument">$field</span>) : \none</pre>
+                <p><em>Register a field type for use by the framework.</em></p>
+                <p>Static interface used so field types can be regsitered at any point, and for any istance of the class.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$field</td>
+                                <td><p>the data to be supplied. Should be an array similar to: <pre><code>
+array(
+'type' => '', //how to target the field type
+'class_name' => '', //name of the field class
+'path' => '', //where the class file is located (so we use lazy loading)
+'assets_path' => '' //where the field assets are stored
+)
+</code></pre></p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setup_meta_box_titles" name="method_setup_meta_box_titles" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setup_meta_box_titles()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setup_meta_box_titles() : \none</pre>
+                <p><em>Hooked into the load post page this then runs the preparation on meta box titles to add the desired icon font if set.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>Fluent_Options::prepare_meta_box_titles();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_add_screen_settings" name="method_add_screen_settings" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">add_screen_settings()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">add_screen_settings(string <span class="argument">$html</span>) : string</pre>
+                <p><em>This method adds the HTML required to show the layout options within the screen settings tab.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$html</td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>$html</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>wp_get_current_user();</dd>
+                                            <dd>get_user_option();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_save_screen_settings" name="method_save_screen_settings" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">save_screen_settings()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">save_screen_settings() : \none</pre>
+                <p><em>Save ajax requests sent via the &lt;code&gt;wp_ajax.</em></p>
+                <p>..</code> action. This saves the layout as either normal or block for the current user.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>wp_die();</dd>
+                                            <dd>check_ajax_referer();</dd>
+                                            <dd>update_user_option();</dd>
+                                            <dd>sanitize_html_class();</dd>
+                                            <dd>wp_get_current_user();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_box_padding" name="method_remove_box_padding" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">remove_box_padding()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_box_padding(array <span class="argument">$classes</span>) : array</pre>
+                <p><em>Meta box filter which allows you to add additional classes to the meta box.</em></p>
+                <p>the framework uses this to apply 0px padding and margins on the <code>.inside</code> class for better layouts.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$classes</td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$classes</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_box_content_dev" name="method_box_content_dev" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">box_content_dev()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">box_content_dev(object|null <span class="argument">$post</span>, array <span class="argument">$data</span>) : \none</pre>
+                <p><em>Display the dev mode meta box.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object|null</td>
+                                <td>$post</td>
+                                <td><p>WP_Post object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data</td>
+                                <td><p>additional data</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>print_r();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_box_content" name="method_box_content" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">box_content()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">box_content(object|null <span class="argument">$post</span>, array <span class="argument">$data</span>) : \none</pre>
+                <p><em>Display meta boxes for all registered sections.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>object|null</td>
+                                <td>$post</td>
+                                <td><p>WP_Post object</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data</td>
+                                <td><p>additional data</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>wp_nonce_field();</dd>
+                                            <dd>isset();</dd>
+                                            <dd>do_action();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepare_sections" name="method_prepare_sections" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">prepare_sections()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepare_sections(array <span class="argument">$sections</span>,  <span class="argument">$id</span>) : \none</pre>
+                <p><em>Loops through supplied data and prepares the $sections array.</em></p>
+                <p>This is different for each type of options so lets leave it blank</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$sections</td>
+                                <td><p>framework setup arguments. Used to change some base settings for the options including context.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$id</td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_section_args" name="method_section_args" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">section_args()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">section_args() : array</pre>
+                <p><em>Returns the default arguments for the $sections property.</em></p>
+                <p>This gets merged with user supplied array via <code>parse_args</code>.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_field_args" name="method_field_args" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">field_args()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">field_args() : array</pre>
+                <p><em>Returns the default arguments for the $field property (nested fields within the $sections property).</em></p>
+                <p>This gets merged with user supplied array via <code>parse_args</code>.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepare_fields" name="method_prepare_fields" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">prepare_fields()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepare_fields(array <span class="argument">$fields</span>, array <span class="argument">$options</span>, string <span class="argument">$key</span>) : array</pre>
+                <p><em>Loops through supplied data and prepares the $fields array.</em></p>
+                <p>Function may also call itself on nested fields (groups). Returns a multilevel fields array.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$fields</td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$options</td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key</td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>Fluent_Options::parse_args();</dd>
+                                            <dd>Fluent_Options::prepare_fields();</dd>
+                                            <dd>sanitize_key();</dd>
+                                            <dd>class_exists();</dd>
+                                            <dd>unset();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_options_schema" name="method_get_options_schema" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_options_schema()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_options_schema() : array</pre>
+                <p><em>Internal function used to supply the default array keys and types for the sections and fields supplied.</em></p>
+                <p>This is used within the <code>format_option()</code> function to ensure all array keys are set when retrieving the values via <code>get_option</code>.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>apply_filters();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_default_values" name="method_get_default_values" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_default_values()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_default_values() : array</pre>
+                <p><em>Attached to the &lt;code&gt;get_option_{$option_name}&lt;/code&gt; filter this function merges the value blueprint with the actual data ensuring all keys are set.</em></p>
+                <p>Also uses wp_unslash to remove slashes from values.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>Fluent_Options::parse_args();</dd>
+                                            <dd>Fluent_Options::get_options_schema();</dd>
+                                            <dd>wp_unslash();</dd>
+                                            <dd>apply_filters();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_remove_clones" name="method_remove_clones" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">remove_clones()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">remove_clones(array <span class="argument">$value</span>) : array</pre>
+                <p><em>Saving the options usually means the &lt;code&gt;$_POST&lt;/code&gt; array conatins the group clones in the array keys.</em></p>
+                <p>These usually look like <code>##field-id-clone##</code>. this function simply looks for the existance of two hashes at the start of the supplied keys and removes them from the returning array if present.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$value</td>
+                                <td><p>data supplied from the save action.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>$out the sanitized and trimmed array data.</p>
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>is_array();</dd>
+                                            <dd>array_filter();</dd>
+                                            <dd>Fluent_Options::remove_clones();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_load_assets" name="method_load_assets" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">load_assets()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load_assets() : \none</pre>
+                <p><em>Load assets and add the screen options for any page. Maybe use in extended classes.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>add_filter();</dd>
+                                            <dd>wp_enqueue_style();</dd>
+                                            <dd>wp_enqueue_script();</dd>
+                                            <dd>wp_localize_script();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_get_required_js" name="method_get_required_js" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">get_required_js()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">get_required_js() : array</pre>
+                <p><em>Returns an array of required fields and there data.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>isset();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_prepare_meta_box_titles" name="method_prepare_meta_box_titles" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">prepare_meta_box_titles()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">prepare_meta_box_titles(string <span class="argument">$context</span>) : \none</pre>
+                <p><em>The prepare meta box titles function is used to run through all the sections, check if a dashicon is to be prepended to the title, and if it is alter the global &lt;code&gt;$wp_meta_boxes&lt;/code&gt; titles accordingly.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$context</td>
+                                <td><p>which meta boxes we are going to alter.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \none
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Options.html"><div class="path-wrapper">\Fluent_Options</div></a></dd>
+                                                                                            <dt>Uses</dt>
+                                                                <dd>get_current_screen();</dd>
+                                            <dd>isset();</dd>
+                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_parse_args" name="method_parse_args" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">parse_args()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">parse_args(array <span class="argument">$a</span>, array <span class="argument">$b</span>, string <span class="argument">$filter</span>) : array</pre>
+                <p><em>Recursive array merging from a default and supplied array.</em></p>
+                <p>Very similar function to <code>wp_parse_args</code> except it filters through the whole array tree.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$a</td>
+                                <td><p>supplied value array.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$b</td>
+                                <td><p>default value array.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$filter</td>
+                                <td><p>optionally run the array through <code>apply_filters</code> before returning.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_provide" name="method_provide" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">provide()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">provide(string <span class="argument">$key</span>) : array</pre>
+                <p><em>The provide function is just a shorthand wrapper for suppling a class object and method as array in WordPress actions and filters.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key</td>
+                                <td><p>the method name to be added to the array: <code>array( &amp;$this, $key )</code>.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_random_string" name="method_random_string" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">random_string()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">random_string(string <span class="argument">$length</span>) : string</pre>
+                <p><em>Helper function used inside the &lt;code&gt;guid()&lt;/code&gt; function to generate random strings.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$length</td>
+                                <td><p>the number of characters to return.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_guid" name="method_guid" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">guid()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">guid() : string</pre>
+                <p><em>Guid function used to reformat array index values before sedning them to the fields.</em></p>
+                <p>Simply replicates the behaviour found in framework javascript.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_default_args" name="method_default_args" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">default_args()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">default_args() : array</pre>
+                <p><em>Function used across extended classes used in conjunction with &lt;code&gt;parse_args&lt;/code&gt; to format supplied arrays and ensure all keys are supplied.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Fluent_Base.html"><div class="path-wrapper">\Fluent_Base</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0.0                                
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            todo
+                        </th>
+                        <td>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">class.fluent-options-page.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/classes/class.fluent-options-page.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 5th, 2014 at 23:29.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

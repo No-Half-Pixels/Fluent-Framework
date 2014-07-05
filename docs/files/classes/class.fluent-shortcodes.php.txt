@@ -1,0 +1,87 @@
+<?php
+/**
+ * Fluent_Shortcodes
+ *
+ * @package Fluent
+ * @since 1.0.0
+ * @version 1.0.0
+ */
+
+/**
+ * Fluent_Shortcodes This is a base class used to create shortcodes instance.
+ *
+ * @since 1.0.0
+ * @version 1.0.0
+ */
+class Fluent_Shortcodes extends Fluent_Base{
+    
+    /**
+     * @var string $require_styles allows themes to provide there own styles.
+     */
+    public $require_styles = true;
+    
+    /**
+      * __construct() sets up the shortcodes class.
+      *
+      * @since 1.0.0
+      *
+      * @return none
+      *
+      */
+    public function __construct( $require_styles = true ){
+        
+        $this->require_styles = apply_filters('fluent/shortcodes/require_styles', $require_styles);
+        
+        add_action('init', $this->provide('init'));
+
+    }
+    
+    /**
+      * Load on the init hook
+      *
+      * @since 1.0.0
+      *
+      * @return none
+      *
+      */
+    public function init(){
+        
+        // Only add hooks when the current user has permissions AND is in Rich Text editor mode
+        if ( ( current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
+            add_filter('mce_external_plugins', $this->provide('register_javascript'));
+            add_filter('mce_buttons', $this->provide('register_buttons'));
+        }
+
+    }
+    
+    /**
+      * Register MCE javascript
+      *
+      * @since 1.0.0
+      *
+      * @return none
+      *
+      */
+    public function register_javascript($plugin_array = array()){
+        
+        $plugin_array['fluent_shortcodes'] = FLUENT_URL . 'assets/js/shortcodes-compiled.min.js';
+        return $plugin_array;
+
+    }
+    
+    /**
+      * Register MCE buttons
+      *
+      * @since 1.0.0
+      *
+      * @return none
+      *
+      */
+    public function register_buttons($buttons = array()){
+        
+        array_push($buttons, 'separator', 'fluent_shortcodes');
+        return $buttons;
+
+    }
+    
+}

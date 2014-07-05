@@ -1,0 +1,246 @@
+<?php
+/**
+ * Fluent_Group_Field
+ *
+ * @package Fluent
+ * @since 1.0.0
+ * @version 1.0.0
+ */
+
+add_action('fluent/options/field/group/render', array('Fluent_Group_Field', 'render'), 1, 2);
+add_filter('fluent/options/field/group/schema', array('Fluent_Group_Field', 'schema'), 1, 2);
+add_filter('fluent/options/field/group/default', array('Fluent_Group_Field', 'default_value'), 1, 2);
+
+/**
+ * Fluent_Group_Field repeatable, nestable groups of fields.
+ */
+class Fluent_Group_Field extends Fluent_Field{
+    
+    /**
+     * Returns the default field data.
+     *
+     * @since 1.0.0
+     *
+     * @return array default field data
+     */
+    public static function field_data(){
+        $self = new self;
+        return array(
+            'multiple' => false,
+            'fields' => array(),
+            'layout' => 'horizontal',
+            'show_headers' => true,
+            'add_row_text' => __('Add Row', $self->domain)
+        );
+    }
+    
+    /**
+     * Notify the Fluent_Options class of the schema needed for this field type within the values array.
+     *
+     * Generally this will be an empty string just to register the key in the array, but custom fields and things like multi selects will need this to be an array.
+     * Groups use this to define the nested fields as well.
+     *
+     * @since 1.0.0
+     *
+     * @param string $value the current value that will be used.
+     *
+     * @param array $data field data as supplied by the section or group.
+     */
+    public static function schema($value = '', $data = array()){
+        $data = self::data_setup($data);
+        if($data['multiple'] == true){
+            return array();
+        }
+        $output = array();
+        foreach($data['fields'] as $field_key => $field){
+            $output[$field_key] = apply_filters('fluent/options/field/'.$field['type'].'/schema', '', $field);
+        }
+        return $output;
+    }
+    
+    /**
+     * Allows the field class to reformat any supplied default value from the original supplied to the object instance.
+     *
+     * @since 1.0.0
+     *
+     * @uses Fluent_Base to generate guids for array values
+     *
+     * @param string $default current default
+     *
+     * @param array $data field data
+     */
+    public static function default_value($default = array(), $data = array()){
+        
+        $data = self::data_setup($data);
+        
+        //if multiple
+        if($data['multiple'] == true){
+            //format default to include guid keys
+            if(is_array($default) && !empty($default)){
+                $output = array();
+                //create an instance to use the guid function
+                $base = new Fluent_Base;
+                foreach($default as $value){
+                    $output[$base->guid()] = $value;   
+                }
+                return $output;
+            }
+            //return empty group
+            return array();
+        }
+        
+        $output = array();
+        foreach($data['fields'] as $field_key => $field){
+            $output[$field_key] = apply_filters('fluent/options/field/'.$field['type'].'/default', $field['default'], $field);
+        }
+        return $output;
+    }
+    
+    /**
+     * Render the field HTML based on the data provided.
+     *
+     * @since 1.0.0
+     *
+     * @param array $data field data.
+     *
+     * @param object $object Fluent_Options instance allowing you to alter anything if required.
+     */
+    public static function render($data = array(), $object){
+        
+        $data = self::data_setup($data);
+
+        if(!is_array($data['value'])){
+            $data['value'] = array();
+        }
+        
+        $data['value'] = array_filter($data['value']);
+        
+        $data['layout'] = 'horizontal'; // forced until we add it
+        
+        $data['default_width'] = 100 / count($data['fields']);
+        
+        if($data['layout'] == 'horizontal'){
+            echo '<table class="options-table-responsive options-group-table" id="options-group-table-'.$data['id'].'">';
+                if($data['show_headers'] === true){
+                    echo '<thead><tr class="options-group-field-headers">';
+                        if($data['multiple'] == true){
+                            echo '<th class="options-group-actions">&nbsp;</th>';
+                        }
+                        foreach($data['fields'] as $key => $field){
+                            $width = (isset($field['width'])) ? $field['width'] : $data['default_width'];
+                            echo '<th data-width="'.$width.'">';
+                                echo '<label>' . $field['title'];
+                                if($field['required']){
+                                    echo '<span class="options-required">*</span>';
+                                }
+                                echo '</label>';
+                                if($field['sub_title'] != ''){
+                                    echo '<p class="description">'.$field['sub_title'].'</p>';
+                                }
+                            echo '</th>';
+                        }
+                        if($data['multiple'] == true){
+                            echo '<th class="options-group-actions">&nbsp;</th>';
+                        }
+                    echo '</tr></thead>';
+                }
+                echo '<tbody>';
+                        if($data['multiple'] == true){
+                            if(!empty($data['value'])){
+                                //print_r($data['value']);
+                                foreach($data['value'] as $value_key => $value){
+                                    $value = array_filter($value);
+                                    if(empty($value)){
+                                        continue;
+                                    }
+                                    echo '<tr id="field-'.$data['id'].'-'.$value_key.'">';
+                                        echo '<td class="options-group-actions options-group-move"><span class="dashicons-menu dashicons">&nbsp;</span></td>';
+                                        foreach($data['fields'] as $key => $field){
+                                            $key = $data['id'] . '-' . $value_key . '-' . $key;
+                                            $field['id'] = $key;
+                                            $index = explode('][', $field['name']);
+                                            $field['value'] = ( isset( $value[end($index)] ) ) ? $value[end($index)] : '';
+                                            $field['name'] = $data['name'] . ']['.$value_key.'][' . $field['name'];
+                                            
+                                            echo '<td id="field-'.$key.'" class="field-type-'.$field['type'].'">';
+                                                if(!isset(Fluent_Options::$field_types[$field['type']])){
+                                                    echo '<p><strong>'.__('Field type not registered!',$object->domain).'</strong></p>';
+                                                }else{
+                                                    do_action('fluent/options/field/'.$field['type'].'/render', $field, $object);
+                                                }
+                                                if($field['description'] != ''){
+                                                    echo '<p class="description">'.$field['description'].'</p>';
+                                                }
+                                            echo '</td>';
+                                        }
+                                        echo '<td class="options-group-actions"><a href="#" class="options-group-remove dashicons-no-alt dashicons" title="Remove">&nbsp;</a></td>';
+                                    echo '</tr>';
+                                }
+                            }
+                        }else{
+                            echo '<tr>';
+                            foreach($data['fields'] as $key => $field){
+                                $key = $data['id'] . '-' . $key;
+                                $field['id'] = $key;
+                                $field['value'] = (isset($data['value'][$field['name']])) ? $data['value'][$field['name']] : '';
+                                $field['name'] = $data['name'] . '][' . $field['name'];
+                                
+                                echo '<td id="field-'.$key.'" class="field-type-'.$field['type'].'">';
+                                    if(!isset(Fluent_Options::$field_types[$field['type']])){
+                                        echo '<p><strong>'.__('Field type not registered!',$object->domain).'</strong></p>';
+                                    }else{
+                                        do_action('fluent/options/field/'.$field['type'].'/render', $field, $object);
+                                    }
+                                    if($field['description'] != ''){
+                                        echo '<p class="description">'.$field['description'].'</p>';
+                                    }
+                                echo '</td>';
+                            }
+                            echo '</tr>';
+                        }
+                echo '</tbody>';
+                if($data['multiple'] == true){
+                    $count = count($data['fields']) + 2;
+                    echo '<tfoot><tr><td colspan="'.$count.'" class="options-group-add"><a href="#" data-id="'.$data['id'].'" class="button button-small">'.$data['add_row_text'].'</a></td></tr></tfoot>';
+                    
+                    //template
+                    echo '<tfoot id="'.$data['id'].'-template" class="options-group-template">';
+                    echo '<tr id="field-'.$data['id'].'-##'.$data['id'].'-clone##">'."\n";
+                        echo '<td class="options-group-actions options-group-move"><span class="dashicons-menu dashicons">&nbsp;</span></td>'."\n";
+                        foreach($data['fields'] as $key => $field){
+                            $key = $data['id'] . '-##'.$data['id'].'-clone##-' . $key;
+                            $field['id'] = $key;
+                            $field['value'] = '';
+                            
+                            //fix for nested multiples
+                            if(strpos($field['name'], '[##'.$data['id'].'-clone##]') === false){
+                                $field['name'] = $data['name'] . '][##'.$data['id'].'-clone##][' . $field['name'];
+                            }else{
+                                $field['name'] = $data['name'] . '][' . $field['name'];   
+                            }
+                            
+                            echo '<td id="field-'.$key.'" class="field-type-'.$field['type'].'">'."\n";
+                                if(!isset(Fluent_Options::$field_types[$field['type']])){
+                                    echo '<p><strong>'.__('Field type not registered!',$object->domain).'</strong></p>'."\n";
+                                }else{
+                                    do_action('fluent/options/field/'.$field['type'].'/render', $field, $object);
+                                }
+                                if($field['description'] != ''){
+                                    echo '<p class="description">'.$field['description'].'</p>'."\n";
+                                }
+                            echo '</td>'."\n";
+                        }
+                        echo '<td class="options-group-actions '.$field['id'].'"><a href="#" class="options-group-remove dashicons-no-alt dashicons" title="Remove">&nbsp;</a></td>'."\n";
+                    echo '</tr>'."\n";
+                echo '</tfoot>';
+                    
+                    
+                }
+            echo '</table>';
+        }else{
+            //row layout todo
+        }
+           
+    }
+    
+}

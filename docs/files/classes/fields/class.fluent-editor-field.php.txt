@@ -1,0 +1,50 @@
+<?php
+/**
+ * Fluent_Editor_Field
+ *
+ * @package Fluent
+ * @since 1.0.0
+ * @version 1.0.0
+ */
+
+add_action('fluent/options/field/editor/render', array('Fluent_Editor_Field', 'render'), 1, 2);
+
+/**
+ * Fluent_Editor_Field WordPress editor field.
+ */
+class Fluent_Editor_Field extends Fluent_Field{
+    
+    /**
+     * Returns the default field data.
+     *
+     * @since 1.0.0
+     *
+     * @return array default field data
+     */
+    public static function field_data(){
+        return array(
+            'args' => array(
+                'textarea_rows' => 6
+            )
+        );
+    }
+    
+    /**
+     * Render the field HTML based on the data provided.
+     *
+     * @since 1.0.0
+     *
+     * @param array $data field data.
+     *
+     * @param object $object Fluent_Options instance allowing you to alter anything if required.
+     */
+    public static function render($data = array(), $object){
+        
+        $data = self::data_setup($data);
+        
+        $data['args']['textarea_name'] = $data['option_name'].'['.$data['name'].']';
+        wp_editor($data['value'], str_replace(array('-','_'), '', $data['id']), $data['args']);
+        
+    }
+    
+}
