@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <meta name="author" content="No Half Pixels Ltd">
 
-    <title>Carousel Template for Bootstrap</title>
+    <title>Fluent Framework</title>
 
     <!-- Bootstrap core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -269,6 +268,10 @@
       <div class="container text-center">
         <form action="http://lists.nohalfpixels.com/subscribe" method="POST" accept-charset="utf-8" role="form" target="_blank">
           <h2>Subscribe to our Newsletter</h2>
+          <div class="alert alert-success text-center alert-dismissible" style="display:none;" role="alert" id="subscribe-alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            Thank you for subscribing!
+          </div>
           <p class="lead">Want to stay up to date with all our latest news, updates and new features? Subscribe to our newsletter below.</p>
           <input type="hidden" name="Source" id="Source" value="Github Site Form">
           <input type="hidden" name="list" id="list-list" value="jCx94w5W8aQ033Dk9Lh2Bg">
@@ -320,6 +323,13 @@
     <script src="assets/colorbox/jquery.colorbox-min.js"></script>
     <script>
     $(document).ready(function(){
+      var hash = document.URL.substr(document.URL.indexOf('#')+1);
+      if(hash == 'subscribed'){
+        $('#subscribe-alert').fadeIn('slow');
+        $('html,body').animate({
+          scrollTop: $("#subscribe-alert").offset().top
+        });
+      }
       $('a.thumbnail').colorbox({maxWidth:"60%",rel:"gallery", title: function(){
         return $(this).attr('title');
       }});
