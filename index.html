@@ -14,6 +14,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="assets/colorbox/example1/colorbox.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -25,6 +26,7 @@
       padding-top: 50px;
       font-family: 'Open Sans', sans-serif;
       color: #333333;
+      position: relative;
     }
     .btn-outline-inverse{
       color: #fff;
@@ -41,11 +43,17 @@
       font-size: 68px;
     }
     .blurb{
-      padding: 60px 0px;
+      padding: 40px 0px 60px 0px;
+    }
+    .blurb h1{
+      margin: 40px 0px;
     }
     .featurette{
       background: #f9f9f9;
       padding: 60px 0px;
+    }
+    .featurette .panel-body{
+      min-height: 230px;
     }
     .featurette h1{
       margin-bottom: 40px;
@@ -53,6 +61,26 @@
     .featurette .fa{
       font-size: 60px;
       padding: 10px 0px;
+      color: #278ab7;
+    }
+    .gallery{
+      padding: 60px 0px;
+    }
+    .gallery h1{
+      margin-bottom: 40px;
+    }
+    .newsletter{
+      background: #f9f9f9;
+      padding: 40px 0px 60px 0px;
+    }
+    .newsletter h2{
+      margin: 40px 0px;
+    }
+    .support{
+      padding: 40px 0px 60px 0px;
+    }
+    .support h1{
+      margin: 40px 0px;
     }
     footer{
       padding: 20px 0px;
@@ -62,10 +90,10 @@
 <!-- NAVBAR
 ================================================== -->
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-bold" data-spy="affix" data-offset-top="1000">
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-bold">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand">Home</a>
+          <a href="#" class="navbar-brand">Fluent Framework</a>
           <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -74,10 +102,11 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar">
           <ul class="nav navbar-nav">
-            <li><a href="#sec1">Section 1</a></li>
-            <li><a href="#sec2">Section 2</a></li>
-            <li><a href="#sec3">Section 3</a></li>
-            <li><a href="#sec4">Section 4</a></li>
+            <li class="active"><a href="#sec1">About</a></li>
+            <li><a href="#sec2">Features</a></li>
+            <li><a href="#sec3">Gallery</a></li>
+            <li><a href="#sec4">Newsletter</a></li>
+            <li><a href="#sec5">Support</a></li>
           </ul>
         </div>
        </div>
@@ -89,7 +118,8 @@
         <h1>Fluent Framework</h1>
           <p class="lead">WordPress Options and Meta Information with a difference.</p>
           <div>&nbsp;</div>
-          <a href="#" class="btn btn-default btn-outline-inverse btn-lg">Get Started</a>
+          <a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="more-info">More Info</a>
+          <a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="buy-now">Buy Now</a>
       </div>
     </div>
 
@@ -108,18 +138,16 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 text-center">
-            <h1>Amazing Features</h1>
+            <h1>Amazing Feature Set</h1>
           </div>
         </div>
         <div class="row">
           <div class="col-md-4 text-center">
             <div class="panel panel-default">
-              <!--<div class="panel-heading">
-                <h3 class="panel-title">Panel title</h3>
-              </div>-->
               <div class="panel-body">
                 <span class="fa fa-cog"></span>
                 <h4>Advanced Field Types</h4>
+                <p class="text-muted">Media Uploads, Galleries, Groups, Switches. If it doesnt have what you need there is always the custom field callback option.</p>
               </div>
             </div>
           </div>
@@ -128,18 +156,149 @@
               <div class="panel-body">
                 <span class="fa fa-sort-amount-asc"></span>
                 <h4>Native Nested Group Options</h4>
+                <p class="text-muted">Groups and nested fields are stored as nested arrays. Your data is saved how it is defined.</p>
               </div>
             </div>
           </div>
           <div class="col-md-4 text-center">
             <div class="panel panel-default">
-              <!--<div class="panel-heading">
-                <h3 class="panel-title">Panel title</h3>
-              </div>-->
               <div class="panel-body">
-                <h4>Advanced Field Types</h4>
+                <span class="fa fa-exchange"></span>
+                <h4>Consistency</h4>
+                <p class="text-muted">Defining and accessing options and fields is the same across all implemtations.</p>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-cubes"></span>
+                <h4>Flexibilty</h4>
+                <p class="text-muted">Fields can be attached to any post types, any taxonomy, users, and custom pages.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-crop"></span>
+                <h4>Native UI Styling</h4>
+                <p class="text-muted">Fluent Framework provide complimetary styling to the WordPress core, and doesn't shout about itself anywhere.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-desktop"></span>
+                <h4>Cross Browser Compatible</h4>
+                <p class="text-muted">Fluent Framework has been built with every user and browser in mind.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-code"></span>
+                <h4>Well Documented Code</h4>
+                <p class="text-muted">Every file in the framework is documented and we activley maintain the <a href="https://github.com/No-Half-Pixels/Fluent-Framework/wiki" target="_blank" title="Fluent Framework Documentation">Wiki</a>.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-bolt"></span>
+                <h4>Latest Technologies</h4>
+                <p class="text-muted">Fluent Framework utilizes the latest technologies from css3 through to grunt automation of assets.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-smile-o"></span>
+                <h4>Developer Friendly</h4>
+                <p class="text-muted">In additon to the great documentation the framework ships with a developer field detailing all info about the currently viewed instance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="gallery" id="sec3">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1>Gallery</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/add-new-page.png" class="thumbnail" title="Meta Box Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/add-new-page.png" alt="Meta Box Options" class="img-responsive"></a>
+          </div>
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/edit-category-page.png" class="thumbnail" title="Taxonomy Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/edit-category-page.png" alt="Taxonomy Options" class="img-responsive"></a>
+          </div>
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/group-field.png" class="thumbnail" title="Group Field Type"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/group-field.png" alt="Group Field Type" class="img-responsive"></a>
+          </div>
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/option-required.png" class="thumbnail" title="Required Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/option-required.png" alt="Required Options" class="img-responsive"></a>
+          </div>
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-layout.png" class="thumbnail" title="Options Table Layout"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-layout.png" alt="Options Table Layout" class="img-responsive"></a>
+          </div>
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-page.png" class="thumbnail" title="Options Custom Page"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-page.png" alt="Options Custom Page" class="img-responsive"></a>
+          </div><!--
+          <div class="col-md-2 text-center">
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/profile-page.png" class="thumbnail"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/profile-page.png" alt="User Profile Page Options" class="img-responsive"></a>
+          </div>-->
+        </div>
+      </div>
+    </div>
+
+    <div class="newsletter" id="sec4">
+      <div class="container text-center">
+        <form action="http://lists.nohalfpixels.com/subscribe" method="POST" accept-charset="utf-8" role="form" target="_blank">
+          <h2>Subscribe to our Newsletter</h2>
+          <p class="lead">Want to stay up to date with all our latest news, updates and new features? Subscribe to our newsletter below.</p>
+          <input type="hidden" name="Source" id="Source" value="Client Site Home Form">
+          <input type="hidden" name="list" id="list-list" value="uN892jrt763gUpJjxGgzIPF5eQ">
+          <div class="row">
+            <div class="col-md-5">
+              <div class="form-group">
+                <input type="text" name="name" id="name-list" class="form-control" placeholder="Enter your Name">
+              </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                  <input type="text" name="email" id="email-list" class="form-control" placeholder="Enter your Email Address">
+                </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <input type="submit" name="submit" id="submit" class="btn btn-block btn-primary" value="Subscribe">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="sec5" class="support">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h1>Support</h1>
+            <p>We provide support for the Fluent Framework round the clock. We utilize the Github Issue system for this and all support requests should be directed to the <br/>project issues page here: <a href="https://github.com/No-Half-Pixels/Fluent-Framework/issues" target="_blank" title="Fluent Framework Issues">Fluent Framework Issues</a></p>
           </div>
         </div>
       </div>
@@ -158,5 +317,20 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="assets/colorbox/jquery.colorbox-min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $('a.thumbnail').colorbox({maxWidth:"60%",rel:"gallery", title: function(){
+        return $(this).attr('title');
+      }});
+      $('#more-info').click(function(){
+        $('html,body').animate({
+          scrollTop: $("#sec2").offset().top
+        });
+        return false;
+      });
+      $('body').scrollspy({ target: '.navbar' })
+    });
+    </script>
   </body>
 </html>
