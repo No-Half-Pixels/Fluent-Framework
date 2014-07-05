@@ -53,6 +53,16 @@
     }
     .featurette .panel-body{
       min-height: 230px;
+      transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+      -webkit-transition: all .2s ease-in-out;
+      cursor: pointer;
+    }
+    .featurette .panel-body:hover{
+      background: #f9f9f9;
+      transform: scale(1.1);
+      -ms-transform: scale(1.1);
+      -webkit-transform: scale(1.1);
     }
     .featurette h1{
       margin-bottom: 40px;
@@ -115,19 +125,37 @@
       <div class="container">
         
         <h1>Fluent Framework</h1>
-          <p class="lead">WordPress Options and Meta Information with a difference.</p>
+          <p class="lead">WordPress Options and Meta Information with a difference. COMING SOON!</p>
           <div>&nbsp;</div>
           <a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="more-info">More Info</a>
-          <a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="buy-now">Buy Now</a>
+          <!--<a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="buy-now">Buy Now</a>-->
       </div>
     </div>
 
     <div id="sec1" class="blurb">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 text-center">
-            <h1>Standardized Definition and Access of Data</h1>
-            <p class="lead">The WordPress Fluent Framework provides standardized definitions, and access to options and additional meta information for any data types.</p>
+          <div class="col-md-12">
+            <h1 class="text-center">Standardized Definition and Access of Data</h1>
+            <p class="lead text-center">The WordPress Fluent Framework provides standardized definitions, and access to options and additional meta information for any data types.</p>
+            <div class="row">
+              <div class="col-md-6">
+                <p>The Framework has been designed to be simple and feature rich. We know there are many options frameworks already available, but none were quite right for our needs.</p>
+                <p>With the Fluent Framework we had a few important goals, listed to the right.</p>
+                <p>We truly belive in DRY (Dont Repeat Yourself) Development, and we have implemented this methodology through the framework, taking all of the differences between different parts of WordPress and providing a front layer which is consistent.</p>
+                <p>We also have design each field type and the way they are utilized, so we create a field once, and use it across any instance. This provides great streamlined code, consistent design, and as a result all fields will work in any application*.</p>
+                <p><small><em class="text-muted">*The only exception to this rule in the Group Field when nested other group fields. It functions 100% across all instances, but we are still working out a few css issues when using on profile pages due to the size/layout of the nested items.</em></small></p>
+              </div>
+              <div class="col-md-6">
+                <ul>
+                <li>Code Optimized<br/><small class="text-muted">We wanted to make everything as bloat free as possible, while still maintaining WordPress PHP requirements.</small></li>
+                <li>Vanilla WordPress UI<br/><small class="text-muted">We wanted the framework to look at home within WordPress.</small></li>
+                <li>Works Across custom pages, post types, taxonomies, and user pages<br/><small class="text-muted">Currently we are unaware of any existing framework that provides this.</small></li>
+                <li>No changes in code or access to values based on implemtation<br/><small class="text-muted">Wether it be a post type, author meta, or taxonomy meta the values returned are always the same structure.</small></li>
+                <li>Nested, repeatable group fields<br/><small class="text-muted">We wanted any field to be nestable, and repeatable. This even works with groups themselves.</small></li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -239,22 +267,22 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/add-new-page.png" class="thumbnail" title="Meta Box Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/add-new-page.png" alt="Meta Box Options" class="img-responsive"></a>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/edit-category-page.png" class="thumbnail" title="Taxonomy Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/edit-category-page.png" alt="Taxonomy Options" class="img-responsive"></a>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/group-field.png" class="thumbnail" title="Group Field Type"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/group-field.png" alt="Group Field Type" class="img-responsive"></a>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/option-required.png" class="thumbnail" title="Required Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/option-required.png" alt="Required Options" class="img-responsive"></a>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-layout.png" class="thumbnail" title="Options Table Layout"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-layout.png" alt="Options Table Layout" class="img-responsive"></a>
           </div>
-          <div class="col-md-2 text-center">
+          <div class="col-sm-2 col-xs-4 text-center">
             <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-page.png" class="thumbnail" title="Options Custom Page"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-page.png" alt="Options Custom Page" class="img-responsive"></a>
           </div><!--
           <div class="col-md-2 text-center">
@@ -266,7 +294,7 @@
 
     <div class="newsletter" id="sec4">
       <div class="container text-center">
-        <form action="http://lists.nohalfpixels.com/subscribe" method="POST" accept-charset="utf-8" role="form" target="_blank">
+        <form action="http://lists.nohalfpixels.com/subscribe" method="POST" accept-charset="utf-8" role="form" id="subscribe-form">
           <h2>Subscribe to our Newsletter</h2>
           <div class="alert alert-success text-center alert-dismissible" style="display:none;" role="alert" id="subscribe-alert">
             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -330,6 +358,17 @@
           scrollTop: $("#subscribe-alert").offset().top
         });
       }
+      $('#subscribe-form').submit(function(){
+        if($('#name-list').val() == ''){
+          alert("Please enter your name!");
+          return false;
+        }
+        if($('#email-list').val() == ''){
+          alert("Please enter your email!");
+          return false;
+        }
+        return true;
+      });
       $('a.thumbnail').colorbox({maxWidth:"60%",rel:"gallery", title: function(){
         return $(this).attr('title');
       }});
