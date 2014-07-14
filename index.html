@@ -10,15 +10,15 @@
     <title>Fluent Framework</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href="assets/colorbox/example1/colorbox.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
     body{
@@ -28,15 +28,17 @@
       position: relative;
     }
     .btn-outline-inverse{
-      color: #fff;
+      color: #333;
       background-color: transparent;
-      border-color: #cdbfe3;
+      border-color: #333;
     }
     .header{
       padding: 60px 0px;
-      background-image: url('assets/squares.png');
+      background-image: url('assets/bg.jpg');
+      background-position: bottom center;
+      background-size: cover;
       background-color: #278ab7;
-      color: #fff;
+      color: #333;
     }
     .header h1{
       font-size: 68px;
@@ -73,7 +75,7 @@
     .featurette .fa{
       font-size: 60px;
       padding: 10px 0px;
-      color: #278ab7;
+      color: #999;
     }
     .gallery{
       padding: 60px 0px;
@@ -105,7 +107,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top navbar-bold">
       <div class="container">
         <div class="navbar-header">
-          <a href="//no-half-pixels.github.io/Fluent-Framework/" class="navbar-brand">Fluent Framework</a>
+          <a href="https://no-half-pixels.github.io/Fluent-Framework/" class="navbar-brand">Fluent Framework</a>
           <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -131,13 +133,13 @@
         <div class="row">
         	<div class="col-md-7">
         		<h1>Fluent Framework</h1>
-		        <p class="lead">WordPress Options and Meta Information with a difference.<br/>COMING SOON!</p>
+		        <p class="lead">The most advanced WordPress development framework</p>
 		        <div>&nbsp;</div>
 		        <a href="#" class="btn btn-default btn-outline-inverse btn-lg" id="more-info">More Info</a>
 		        <a href="http://codecanyon.net/item/fluent-framework/8182629?ref=nohalfpixels" class="btn btn-default btn-outline-inverse btn-lg" id="buy-now">Buy Now</a>
           </div>
           <div class="col-md-5 hidden-xs hidden-sm">
-            <img src="//dkbvs5nxigunb.cloudfront.net/psds/site-banner.png" alt="Fluent Framework" class="img-responsive">
+            <img src="https://dkbvs5nxigunb.cloudfront.net/psds/site-banner.png" alt="Fluent Framework" class="img-responsive">
           </div>
         </div>
       </div>
@@ -151,6 +153,8 @@
             <p class="lead text-center">The WordPress Fluent Framework provides standardized definitions, and access to options and additional meta information for any data types.</p>
             <div class="row">
               <div class="col-md-6">
+              	<p>The most advanced WordPress development framework.</p>
+              	<p>WordPress Options Pages, Meta Boxes, Options Panels, User Meta Panels, Taxonomy Meta Panels, Import/Export, Nested Options, Repeatable Options with a difference.</p>
                 <p>The Framework has been designed to be simple and feature rich. We know there are many options frameworks already available, but none were quite right for our needs.</p>
                 <p>With the Fluent Framework we had a few important goals, listed to the right.</p>
                 <p>We truly belive in DRY (Dont Repeat Yourself) Development, and we have implemented this methodology through the framework, taking all of the differences between different parts of WordPress and providing a front layer which is consistent.</p>
@@ -164,6 +168,8 @@
                 <li>Works Across custom pages, post types, taxonomies, and user pages<br/><small class="text-muted">Currently we are unaware of any existing framework that provides this.</small></li>
                 <li>No changes in code or access to values based on implemtation<br/><small class="text-muted">Wether it be a post type, author meta, or taxonomy meta the values returned are always the same structure.</small></li>
                 <li>Nested, repeatable group fields<br/><small class="text-muted">We wanted any field to be nestable, and repeatable. This even works with groups themselves.</small></li>
+                <li>Role/Capability Locks on sections and fields<br/><small class="text-muted">Because not everyone should be able to access all options.</small></li>
+                <li>Conditional Fields<br/><small class="text-muted">Some options arent required if other options have certain values. With Fluent Framework you can add multiple if/and conditions to a fields display.</small></li>
                 </ul>
               </div>
             </div>
@@ -195,6 +201,35 @@
                 <span class="fa fa-sort-amount-asc"></span>
                 <h4>Native Nested Group Options</h4>
                 <p class="text-muted">Groups and nested fields are stored as nested arrays. Your data is saved how it is defined.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-lock"></span>
+                <h4>Role/Capability Locks</h4>
+                <p class="text-muted">Sections or fields can be locked for certain users who do not meet the criteria for settings values.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-lock"></span>
+                <h4>Conditional Fields</h4>
+                <p class="text-muted">Fields can be shown/hidden based on multiple if/or/and conditons. Simply defines the conditions and the rest will be done for you.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <span class="fa fa-refresh"></span>
+                <h4>Import/Export</h4>
+                <p class="text-muted">Import and Export any instance type (options pages, metaboxes, taxonomy meta, user meta). Added to the page as fields so placement is yours.</p>
               </div>
             </div>
           </div>
@@ -279,25 +314,25 @@
         </div>
         <div class="row">
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/add-new-page.png" class="thumbnail" title="Meta Box Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/add-new-page.png" alt="Meta Box Options" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/add-new-page.png" class="thumbnail" title="Meta Box Options"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/add-new-page.png" alt="Meta Box Options" class="img-responsive"></a>
           </div>
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/edit-category-page.png" class="thumbnail" title="Taxonomy Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/edit-category-page.png" alt="Taxonomy Options" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/edit-category-page.png" class="thumbnail" title="Taxonomy Options"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/edit-category-page.png" alt="Taxonomy Options" class="img-responsive"></a>
           </div>
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/group-field.png" class="thumbnail" title="Group Field Type"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/group-field.png" alt="Group Field Type" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/group-field.png" class="thumbnail" title="Group Field Type"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/group-field.png" alt="Group Field Type" class="img-responsive"></a>
           </div>
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/option-required.png" class="thumbnail" title="Required Options"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/option-required.png" alt="Required Options" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/option-required.png" class="thumbnail" title="Required Options"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/option-required.png" alt="Required Options" class="img-responsive"></a>
           </div>
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-layout.png" class="thumbnail" title="Options Table Layout"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-layout.png" alt="Options Table Layout" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-layout.png" class="thumbnail" title="Options Table Layout"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-layout.png" alt="Options Table Layout" class="img-responsive"></a>
           </div>
           <div class="col-sm-2 col-xs-4 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-page.png" class="thumbnail" title="Options Custom Page"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-page.png" alt="Options Custom Page" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/options-page.png" class="thumbnail" title="Options Custom Page"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/options-page.png" alt="Options Custom Page" class="img-responsive"></a>
           </div><!--
           <div class="col-md-2 text-center">
-            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/profile-page.png" class="thumbnail"><img src="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/profile-page.png" alt="User Profile Page Options" class="img-responsive"></a>
+            <a href="//dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/profile-page.png" class="thumbnail"><img src="https://dkbvs5nxigunb.cloudfront.net/screenshots/1.0.0/thumbs/profile-page.png" alt="User Profile Page Options" class="img-responsive"></a>
           </div>-->
         </div>
       </div>
@@ -358,8 +393,8 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="assets/colorbox/jquery.colorbox-min.js"></script>
     <script>
     $(document).ready(function(){
