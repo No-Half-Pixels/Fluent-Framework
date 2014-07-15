@@ -4,13 +4,18 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
  * Fluent_Options_Taxonomy. Create and stores fields and sections.
  */
 class Fluent_Options_Taxonomy extends Fluent_Options{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * __construct() parse arguments supplied, setup framework depending on the $context supplied.
@@ -130,14 +135,13 @@ class Fluent_Options_Taxonomy extends Fluent_Options{
         $this->prepare_sections( $this->sections );
         
         $this->load_assets();
+
+        $rel_id = (isset($_REQUEST['tag_ID'])) ? $_REQUEST['tag_ID'] : false;
         
-        wp_localize_script( 'fluent-options-js', 'fluent', array(
+        $this->localize_script(array(
             'context' => 'taxonomy',
-            'L10n' => array(
-                'warning_defaults' => __('Are you sure?', $this->domain)
-            ),
-            'required' => $this->get_required_js()
-        ) );
+            'rel_id' => $rel_id
+        ));
         
         foreach($this->sections as $key => $section){
             foreach($section['fields'] as $k => $field){
@@ -169,8 +173,16 @@ class Fluent_Options_Taxonomy extends Fluent_Options{
             }else{
                 check_admin_referer('update-tag_'.$term_id);
             }
-            $value = $this->remove_clones($_POST[$this->args['option_name']]);
+            $value = apply_filters('fluent/options/save', $this->remove_clones($_POST[$this->args['option_name']]));
             update_option('taxonomy_'.$term_id.'_'.$this->args['option_name'], $value );
+            //save seperate fields if needed
+            foreach($this->sections as $section){
+                foreach($section['fields'] as $id => $field){
+                    if($field['seperate'] === true){
+                        update_option('taxonomy_'.$term_id.'_'.$this->args['option_name'].'_'.$id, $value[$id]);
+                    }
+                }
+            }
         }
     }
     
@@ -227,7 +239,7 @@ class Fluent_Options_Taxonomy extends Fluent_Options{
                                     echo '<p class="description">'.$field['sub_title'].'</p>';
                                 }
                             echo '</th>';
-                            echo '<td class="field-type-'.$field['type'].'">';
+                            echo '<td class="field field-type-'.$field['type'].'">';
                                 if(!isset(static::$field_types[$field['type']])){
                                     echo '<p><strong>'.__('Field type not registered!',$this->domain).'</strong></p>';
                                 }else{
@@ -236,10 +248,12 @@ class Fluent_Options_Taxonomy extends Fluent_Options{
                                 if($field['description'] != ''){
                                     echo '<p class="description">'.$field['description'].'</p>';
                                 }
+                                $this->display_field_lock($field);
                             echo '</td>';
                         echo '</tr>';
                     }
                 echo '</table>';
+                $this->display_lock($this->sections[$section_id]);
             echo '</div>';
         }
     }

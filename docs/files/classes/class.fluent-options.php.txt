@@ -4,7 +4,7 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 //for validation: http://jqueryvalidation.org/documentation/
@@ -15,6 +15,11 @@
  * Fluent_Options main framework class. Create and stores fields and sections, displays in the admin based on $context supplied
  */
 class Fluent_Options extends Fluent_Base{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * @var array $field_types static definitions of field types. Can be registered, editted and removed.
@@ -89,7 +94,8 @@ class Fluent_Options extends Fluent_Base{
             'context'       => 'page',
             'dev_mode'      => false,
             'sections'      => array(),
-            'default_layout' => 'options-normal'
+            'default_layout' => 'options-normal',
+            'rel_id' => ''
         );
         
     }
@@ -111,7 +117,9 @@ class Fluent_Options extends Fluent_Base{
             'description' => '',
             'context' => 'normal',
             'priority' => 'high',
-            'fields' => array()
+            'fields' => array(),
+            'caps' => array(),
+            'roles' => array()
         );
         
     }
@@ -135,7 +143,11 @@ class Fluent_Options extends Fluent_Base{
             'required' => false,
             'required_message' => __('This option is required.', $this->domain),
             'default' => '',
-            'value' => ''
+            'value' => '',
+            'caps' => array(),
+            'roles' => array(),
+            'conditions' => array(),
+            'seperate' => false
         );
         
     }
@@ -303,6 +315,7 @@ class Fluent_Options extends Fluent_Base{
         wp_register_style('fluent-ui-css', FLUENT_JQUERY_UI_STYLE, array(), $this->version);
         
         wp_enqueue_script( 'fluent-options-js', Fluent_Base::$url . 'assets/js/options-compiled.min.js', array('jquery', 'postbox'), $this->version, true );
+
     }
     
     /**
@@ -328,6 +341,98 @@ class Fluent_Options extends Fluent_Base{
         }
         return $out;
     }
+
+    /**
+     * Returns an array of conditional fields and there data.
+     *
+     * @uses Fluent_Options::get_field_type();
+     *
+     * @since 1.0.1
+     *
+     * @return array
+     */
+    protected function get_conditionals(){
+        $out = array();
+        foreach($this->sections as $key => $section){
+            foreach($section['fields'] as $k => $field){
+                if(isset($field['conditions']) && !empty($field['conditions'])){
+                	$conds = $field['conditions'];
+                	foreach($conds as $k => $cond){
+                		foreach($cond as $k2 => $v){
+                			if(!isset($v['value'])){
+                				$conds[$k][$k2]['value'] = '';
+                				$v['value'] = '';
+                			}
+                			if(!isset($v['id'])){
+                				$conds[$k][$k2]['id'] = '';
+                				$v['id'] = '';
+                			}
+                			if(!isset($v['field_type'])){
+                				$conds[$k][$k2]['field_type'] = $this->get_field_type($v['id']);
+                			}
+                			if(!isset($v['type'])){
+                				$conds[$k][$k2]['type'] = '==';
+                			}
+                			if(is_array($v['value'])){
+                				$conds[$k][$k2]['value'] = implode('|', $v['value']);
+                			}
+                		}
+                	}
+                    $out[$field['id']] = $conds;
+                }
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * Returns the field type for any given field.
+     *
+     *
+     * @since 1.0.1
+     *
+     * @return string
+     */
+    private function get_field_type($key){
+    	foreach($this->sections as $section){
+    		foreach($section['fields'] as $id => $field){
+    			if($id == $key){
+    				return $field['type'];
+    				break;
+    			}
+    		}
+    	}
+    }
+
+    /**
+     * Returns an array of required fields and there data.
+     *
+     *
+     * @since 1.0.1
+     *
+     * @return array
+     */
+    protected function get_user_caps(){
+        $current_user = wp_get_current_user();
+        $out = array();
+        foreach($current_user->allcaps as $key => $cap){
+            $out[] = $key;
+        }
+        return $out;
+    }
+
+    /**
+     * Returns the current user role
+     *
+     *
+     * @since 1.0.1
+     *
+     * @return string
+     */
+    protected function get_user_role(){
+        $current_user = wp_get_current_user();
+        return array_shift($current_user->roles);
+    }
     
     /**
      * Hooked into the load post page this then runs the preparation on meta box titles to add the desired icon font if set.
@@ -342,6 +447,30 @@ class Fluent_Options extends Fluent_Base{
         $this->prepare_meta_box_titles();
         $this->prepare_meta_box_titles('advanced');
         $this->prepare_meta_box_titles('side');
+    }
+
+    /**
+     * Localize the main options script
+     *
+     * @uses Fluent_Base::parse_args();
+     *
+     * @since 1.0.1
+     *
+     * @return none
+     */
+    public function localize_script($data = array()){
+        $data = $this->parse_args($data, array(
+            'L10n' => array(
+                'warning_defaults' => __('Are you sure?', $this->domain),
+            ),
+            'required' => $this->get_required_js(),
+            'conditionals' => $this->get_conditionals(),
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'option_name' => $this->args['option_name'],
+            'nonce' => wp_create_nonce('fluent_nonce'),
+            'rel_id' => ''
+        ));
+        wp_localize_script( 'fluent-options-js', 'fluent', $data );
     }
     
     /**
@@ -476,7 +605,7 @@ class Fluent_Options extends Fluent_Base{
      * @return none
      */
     public function box_content_dev($post = null, $data = array()){
-        echo '<img class="options-spinner" src="images/spinner-2x.gif"/>';
+        echo '<img class="options-spinner" src="'.admin_url('images/spinner-2x.gif').'"/>';
         echo '<table class="options-table-responsive options-table">';
             echo '<tr><td colspan="2">'.__('dev description', $this->domain).'</td></tr>';
             echo '<tr id="field-dev-object">';
@@ -556,7 +685,7 @@ class Fluent_Options extends Fluent_Base{
         
         
         $section_id = $data['args'];
-        echo '<img class="options-spinner" src="images/spinner-2x.gif"/>';
+        echo '<img class="options-spinner" src="'.admin_url('images/spinner-2x.gif').'"/>';
         echo '<table class="options-table-responsive options-table">';
             if($this->sections[$section_id]['description'] != ''){
                 echo '<tr><td colspan="2">'.$this->sections[$section_id]['description'].'</td></tr>';
@@ -573,7 +702,7 @@ class Fluent_Options extends Fluent_Base{
                             echo '<p class="description">'.$field['sub_title'].'</p>';
                         }
                     echo '</td>';
-                    echo '<td class="field-type-'.$field['type'].'">';
+                    echo '<td class="field field-type-'.$field['type'].'">';
                         if(!isset(static::$field_types[$field['type']])){
                             echo '<p><strong>'.__('Field type not registered!',$this->domain).'</strong></p>';
                         }else{
@@ -582,10 +711,42 @@ class Fluent_Options extends Fluent_Base{
                         if($field['description'] != ''){
                             echo '<p class="description">'.$field['description'].'</p>';
                         }
+                        $this->display_field_lock($field);
                     echo '</td>';
                 echo '</tr>';
             }
         echo '</table>';
+        $this->display_lock($this->sections[$section_id]);
+    }
+
+    protected function display_lock($section = array()){
+        $role = $this->get_user_role();
+        if(!empty($section['roles']) && !in_array($role, $section['roles'])){
+            echo '<div class="options-section-locked"><div class="locked-inner"><div class="dashicons dashicons-lock">&nbsp;</div><br/>'.str_replace('[role]', '<strong>'.ucwords(str_replace('_', ' ', implode('</strong> or <strong>', $section['roles']))).'</strong>', __('This section requires a role of [role].', $this->domain)).'</div></div>';
+            return;
+        }
+        $caps = $this->get_user_caps();
+        foreach($section['caps'] as $cap){
+            if(!in_array($cap, $caps)){
+                echo '<div class="options-section-locked"><div class="locked-inner"><div class="dashicons dashicons-lock">&nbsp;</div><br/>'.str_replace('[cap]', '<strong>'.ucwords(str_replace('_', ' ', $cap)).'</strong>', __('This section requires the [cap] capability.', $this->domain)).'</div></div>';
+                return;
+            }
+        }
+    }
+
+    protected function display_field_lock($field = array()){
+        $role = $this->get_user_role();
+        if(!empty($field['roles']) && !in_array($role, $field['roles'])){
+            echo '<div class="options-field-locked"><div class="locked-inner"><div class="dashicons dashicons-lock">&nbsp;</div>'.str_replace('[role]', '<strong>'.ucwords(str_replace('_', ' ', implode('</strong> or <strong>', $field['roles']))).'</strong>', __('This field requires a role of [role].', $this->domain)).'</div></div>';
+            return;
+        }
+        $caps = $this->get_user_caps();
+        foreach($field['caps'] as $cap){
+            if(!in_array($cap, $caps)){
+                echo '<div class="options-field-locked"><div class="locked-inner"><div class="dashicons dashicons-lock">&nbsp;</div>'.str_replace('[cap]', '<strong>'.ucwords(str_replace('_', ' ', $cap)).'</strong>', __('This field requires the [cap] capability.', $this->domain)).'</div></div>';
+                return;
+            }
+        }
     }
 
 }

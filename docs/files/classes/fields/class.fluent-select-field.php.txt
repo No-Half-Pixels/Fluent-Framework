@@ -4,7 +4,7 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 add_action('fluent/options/field/select/render', array('Fluent_Select_Field', 'render'), 1, 2);
@@ -14,6 +14,11 @@ add_action('fluent/options/field/select/schema', array('Fluent_Select_Field', 's
  * Fluent_Select_Field simple select field.
  */
 class Fluent_Select_Field extends Fluent_Field{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * Returns the default field data.
@@ -63,6 +68,10 @@ class Fluent_Select_Field extends Fluent_Field{
         $data = self::data_setup($data);
         
         $multiple = ($data['multiple'] == true) ? '[]" multiple="multiple' : '';
+
+        if($data['value'] == '' && isset($data['default']) && $data['default'] != ''){
+            $data['value'] = $data['default'];
+        }
         
         echo '<select name="'.$data['option_name'].'['.$data['name'].']'.$multiple.'" class="selectize" placeholder="'.$data['placeholder'].'">';
             foreach($data['options'] as $key => $value){

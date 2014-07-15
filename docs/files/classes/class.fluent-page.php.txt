@@ -4,13 +4,18 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
  * Fluent_Page can be used on its own or supplied to the Fluent_Options class as a dependancy for page rendering
  */
 class Fluent_Page extends Fluent_Base{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * @var string $page will be set as the unique page id when using add_**_page functions.
@@ -27,7 +32,7 @@ class Fluent_Page extends Fluent_Base{
      * @uses add_action();
      * @uses Add_filter
      *
-     * @since 1.0.0
+     * @since 1.0.1
      *
      * @param array $args class setup arguments. Used to change some base settings for the class.
      *
@@ -41,7 +46,8 @@ class Fluent_Page extends Fluent_Base{
         $this->args['slug'] = sanitize_key($this->args['slug']);
         
         //register the page
-        add_action('admin_menu', $this->provide('_register_page'));
+        $action = ($this->args['network'] == true) ? 'network_admin_menu' : 'admin_menu';
+        add_action($action, $this->provide('_register_page'));
         
         //add render callback if needed
         if(false !== $this->args['callback']){
@@ -67,7 +73,8 @@ class Fluent_Page extends Fluent_Base{
             'priority' => null,
             'menu_icon' => '',
             'page_icon' => 'icon-themes',
-            'callback' => false
+            'callback' => false,
+            'network' => false
         );
         
     }

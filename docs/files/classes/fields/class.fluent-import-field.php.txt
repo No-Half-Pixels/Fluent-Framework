@@ -1,0 +1,133 @@
+<?php
+/**
+ * Fluent_Import_Field
+ *
+ * @package Fluent
+ * @since 1.0.1
+ * @version 1.0.0
+ */
+
+add_action('fluent/options/field/import/render', array('Fluent_Import_Field', 'render'), 1, 2);
+add_action('fluent/options/field/import/enqueue', array('Fluent_Import_Field', 'enqueue'), 1, 2);
+add_filter('upload_mimes', array('Fluent_Import_Field', 'field_file_type'));
+add_filter('fluent/options/save', array('Fluent_Import_Field', 'import_save'), 1, 500);
+
+/**
+ * Fluent_Import_Field importer field.
+ */
+class Fluent_Import_Field extends Fluent_Field{
+
+    /**
+     * Use custom file extension and add it to the list so we dont effect other settings.
+     *
+     * @since 1.0.0
+     *
+     * @return array mime types
+     */
+    public static function field_file_type($existing_mimes = array()){
+        $existing_mimes['wpds'] = 'application/wpds';
+        return $existing_mimes;
+    }
+
+    /**
+     * Use custom file extension and add it to the list so we dont effect other settings.
+     *
+     * @since 1.0.0
+     *
+     * @return array mime types
+     */
+    public static function import_save($options = array()){
+        if(isset($options['fluent-import-file']) && $options['fluent-import-file'] != ''){
+            $attachment_id = $options['fluent-import-file'];
+            $attachment = get_attached_file( $attachment_id, true );
+            if($attachment != ''){
+                $data = file_get_contents($attachment);
+                if($data != ''){
+                    $data = json_decode($data, true);
+                    if(is_array($data)){
+                        $options = $data;
+                        add_action('admin_notices', array('Fluent_Import_Field', 'import_updated'));
+                        add_action('network_admin_notices', array('Fluent_Import_Field', 'import_updated'));
+                    }else{
+                        add_action('admin_notices', array('Fluent_Import_Field', 'import_error_3'));
+                        add_action('network_admin_notices', array('Fluent_Import_Field', 'import_error_3'));
+                    }
+                }else{
+                    add_action('admin_notices', array('Fluent_Import_Field', 'import_error_2'));
+                    add_action('network_admin_notices', array('Fluent_Import_Field', 'import_error_2'));
+                }
+            }else{
+                add_action('admin_notices', array('Fluent_Import_Field', 'import_error'));
+                add_action('network_admin_notices', array('Fluent_Import_Field', 'import_error'));
+            }
+            //always delete the file
+            wp_delete_attachment($attachment_id);
+        }
+        //always unset the import id
+        unset($options['fluent-import-file']);
+        return $options;
+    }
+
+    public static function import_updated(){
+        $self = new self;
+        echo '<div class="updated info"><p><strong>'.__('Settings Imported.', $self->domain).'</strong></p></div>';
+    }
+    public static function import_error(){
+        $self = new self;
+        echo '<div class="updated error"><p><strong>'.__('Settings Not Imported. We could not locate the file.', $self->domain).'</strong></p></div>';
+    }
+
+    public static function import_error_2(){
+        $self = new self;
+        echo '<div class="updated error"><p><strong>'.__('Settings Not Imported. We could not access the file.', $self->domain).'</strong></p></div>';
+    }
+    public static function import_error_3(){
+        $self = new self;
+        echo '<div class="updated error"><p><strong>'.__('Settings Not Imported. The file didnt contain import data.', $self->domain).'</strong></p></div>';
+    }
+    
+    /**
+     * Returns the default field data.
+     *
+     * @since 1.0.0
+     *
+     * @return array default field data
+     */
+    public static function field_data(){
+        $self = new self;
+        return array(
+            'upload_title' => __('Select Import File', $self->domain), 
+            'media_title' => __('Import', $self->domain), 
+            'media_select' => __('Import This File', $self->domain)
+        );
+    }
+    
+    /**
+     * Enqueue or register styles and scripts to be used when the field is rendered.
+     *
+     * @since 1.0.0
+     *
+     * @param array $data field data.
+     *
+     * @param array $field_data locations and other data for the field type.
+     */
+    public static function enqueue( $data = array(), $field_data = array() ){
+        wp_enqueue_media();
+    }
+    
+    /**
+     * Render the field HTML based on the data provided.
+     *
+     * @since 1.0.0
+     *
+     * @param array $data field data.
+     *
+     * @param object $object Fluent_Options instance allowing you to alter anything if required.
+     */
+    public static function render($data = array(), $object){
+        $data = self::data_setup($data);
+        echo '<input type="hidden" name="'.$data['option_name'].'[fluent-import-file]" id="fluent-import-file" value=""/>';
+        echo '<a href="#" class="button buttom-small upload" data-title="'.$data['media_title'].'" data-select="'.$data['media_select'].'">' . $data['upload_title'] . '</a>';
+    }
+    
+}

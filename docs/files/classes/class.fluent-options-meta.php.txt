@@ -4,13 +4,18 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
  * Fluent_Options_Meta. Create and stores fields and sections.
  */
 class Fluent_Options_Meta extends Fluent_Options{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * __construct() parse arguments supplied, setup framework options class.
@@ -154,13 +159,10 @@ class Fluent_Options_Meta extends Fluent_Options{
         
         $this->load_assets();
         
-        wp_localize_script( 'fluent-options-js', 'fluent', array(
+        $this->localize_script(array(
             'context' => 'meta',
-            'L10n' => array(
-                'warning_defaults' => __('Are you sure?', $this->domain)
-            ),
-            'required' => $this->get_required_js()
-        ) );
+            'rel_id' => $post->ID
+        ));
         
         foreach($this->sections as $key => $section){
             add_meta_box( $key, $section['title'], $this->provide( 'box_content' ), get_current_screen(), $section['context'], $section['priority'], $key );
@@ -227,8 +229,17 @@ class Fluent_Options_Meta extends Fluent_Options{
         if(isset($_POST[$this->args['option_name']])){
             check_admin_referer('save_'.$this->args['option_name'], $this->args['option_name'].'_nonce');
             delete_post_meta($post_id, $this->args['option_name']);
-            $new_meta_value = $this->remove_clones($_POST[$this->args['option_name']]);
+            $new_meta_value = apply_filters('fluent/options/save', $this->remove_clones($_POST[$this->args['option_name']]));
             update_post_meta( $post_id, $this->args['option_name'], $new_meta_value );
+            //save seperate fields if needed
+            foreach($this->sections as $section){
+                foreach($section['fields'] as $id => $field){
+                    if($field['seperate'] === true){
+                        delete_post_meta($post_id, $this->args['option_name'].'_'.$id);
+                        update_post_meta( $post_id, $this->args['option_name'].'_'.$id, $new_meta_value[$id] );
+                    }
+                }
+            }
         }
     }
     

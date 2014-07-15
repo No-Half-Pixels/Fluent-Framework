@@ -4,13 +4,18 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
  * Fluent_Options_User. Create and stores fields and sections.
  */
 class Fluent_Options_User extends Fluent_Options{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * __construct() parse arguments supplied, setup framework depending on the $context supplied.
@@ -125,14 +130,20 @@ class Fluent_Options_User extends Fluent_Options{
         if($screen->id != 'profile' && $screen->id != 'user-edit'){return;}
         
         $this->load_assets();
+
+        //get user id
+        $rel_id = '';
+        if($screen->id == 'profile'){
+        	$current_user = wp_get_current_user();
+        	$rel_id = $current_user->ID;
+        }else{
+        	$rel_id = $_REQUEST['user_id'];
+        }
         
-        wp_localize_script( 'fluent-options-js', 'fluent', array(
+        $this->localize_script(array(
             'context' => 'user',
-            'L10n' => array(
-                'warning_defaults' => __('Are you sure?', $this->domain)
-            ),
-            'required' => $this->get_required_js()
-        ) );
+            'rel_id' => $rel_id
+        ));
         
         foreach($this->sections as $key => $section){
             foreach($section['fields'] as $k => $field){
@@ -172,8 +183,17 @@ class Fluent_Options_User extends Fluent_Options{
                 wp_die(__('You do not have permission to edit this user.'));
             
             delete_user_meta($user_id, $this->args['option_name']);
-            $new_meta_value = $this->remove_clones($_POST[$this->args['option_name']]);
+            $new_meta_value = apply_filters('fluent/options/save', $this->remove_clones($_POST[$this->args['option_name']]));
             update_user_meta( $user_id, $this->args['option_name'], $new_meta_value );
+            //save seperate fields if needed
+            foreach($this->sections as $section){
+                foreach($section['fields'] as $id => $field){
+                    if($field['seperate'] === true){
+                    	delete_user_meta($user_id, $this->args['option_name'].'_'.$id);
+                    	update_user_meta( $user_id, $this->args['option_name'].'_'.$id, $new_meta_value[$id] );
+                    }
+                }
+            }
             add_action('admin_notices', $this->provide('settings_updated'));
         }
         
@@ -229,7 +249,7 @@ class Fluent_Options_User extends Fluent_Options{
                                     echo '<p class="description">'.$field['sub_title'].'</p>';
                                 }
                             echo '</th>';
-                            echo '<td class="field-type-'.$field['type'].'">';
+                            echo '<td class="field field-type-'.$field['type'].'">';
                                 if(!isset(static::$field_types[$field['type']])){
                                     echo '<p><strong>'.__('Field type not registered!',$this->domain).'</strong></p>';
                                 }else{
@@ -238,10 +258,12 @@ class Fluent_Options_User extends Fluent_Options{
                                 if($field['description'] != ''){
                                     echo '<p class="description">'.$field['description'].'</p>';
                                 }
+                                $this->display_field_lock($field);
                             echo '</td>';
                         echo '</tr>';
                     }
                 echo '</table>';
+                $this->display_lock($this->sections[$section_id]);
             echo '</div>';
         }
     }

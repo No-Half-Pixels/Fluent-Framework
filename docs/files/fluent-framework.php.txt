@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Fluent Framework
-Plugin URI: http://nohalfpixels.com
+Plugin URI: http://no-half-pixels.github.io/Fluent-Framework/
 Description: Fluent Framework is a WordPress Plugin/Framework which allows you to create and manage options pages, meta boxes, author meta, taxonomy meta and much more.
 Author: No Half Pixels Ltd
-Version: 1.0.0
+Version: 1.0.2
 Author URI: http://nohalfpixels.com
 Text Domain: fluent
 */
@@ -16,7 +16,7 @@ Text Domain: fluent
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.2
  */
 
 //prevent loading if class already loaded!
@@ -40,6 +40,10 @@ require dirname(FLUENT_FILE) . '/classes/class.fluent-options-meta.php';
 require dirname(FLUENT_FILE) . '/classes/class.fluent-options-user.php';
 require dirname(FLUENT_FILE) . '/classes/class.fluent-options-taxonomy.php';
 require dirname(FLUENT_FILE) . '/classes/fields/class.fluent-field.php';
+//load post type class
+require dirname(FLUENT_FILE) . '/classes/class.fluent-post-type.php';
+//load taxonomy class
+require dirname(FLUENT_FILE) . '/classes/class.fluent-taxonomy.php';
 
 /**
  * Define path to fluent resources. Needed for loading assets, if already defined we are running as included file, if not were in the plugin.
@@ -185,10 +189,41 @@ Fluent_Options::register_field_type(array(
     'assets_path' => Fluent_Base::$url . 'assets/fields/info/'
 ));
 
-//load shortcode class - 1.1.0
-//require dirname(FLUENT_FILE) . '/classes/class.fluent-shortcodes.php';
+Fluent_Options::register_field_type(array(
+    'type' => 'import',
+    'class_name' => 'Fluent_Import_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-import-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/import/'
+));
 
+Fluent_Options::register_field_type(array(
+    'type' => 'export',
+    'class_name' => 'Fluent_Export_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-export-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/export/'
+));
+
+Fluent_Options::register_field_type(array(
+    'type' => 'font',
+    'class_name' => 'Fluent_Font_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-font-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/font/'
+));
+
+Fluent_Options::register_field_type(array(
+    'type' => 'radio-img',
+    'class_name' => 'Fluent_Radio_Img_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-radio-img-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/radio-img/'
+));
+/*
+Fluent_Options::register_field_type(array(
+    'type' => 'search',
+    'class_name' => 'Fluent_Search_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-search-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/search/'
+));
+*/
 if(defined('FLUENT_DEMO') && FLUENT_DEMO == true){
-    require dirname(FLUENT_FILE) . '/classes/class.fluent-demo.php';
-    new Fluent_Options_Demo;
+    require dirname(FLUENT_FILE) . '/example-usage.php';
 }

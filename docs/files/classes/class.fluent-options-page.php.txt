@@ -4,13 +4,18 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 /**
  * Fluent_Options_Page. Create and stores fields and sections.
  */
 class Fluent_Options_Page extends Fluent_Options{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * @var $page Fluent_Page instance. If supplied the Options class should be used in page context and we use this to register the output we need on the page.
@@ -70,13 +75,21 @@ class Fluent_Options_Page extends Fluent_Options{
       */
     protected function default_args(){
         
-        return array(
+        return self::parse_args(array(
             'option_name'   => 'option_name',
             'dev_mode'      => false,
             'sections'      => array(),
             'default_layout' => 'options-normal',
-            'page_args' => array()
-        );
+            'page_args' => array(),
+            'restore' => true,
+            'show_updated' => true,
+            'messages' => array(
+            	'save_button' => __('Save Options', $this->domain),
+            	'saved' => __('Settings saved.', $this->domain),
+            	'restore' => __('Settings reset to defaults.', $this->domain),
+            	'save_box' => ''
+            )
+        ), parent::default_args());
         
     }
     
@@ -171,22 +184,42 @@ class Fluent_Options_Page extends Fluent_Options{
      */
     public function load_page($page_object){
         
-        if(isset($_POST['restore-defaults']) && $_POST['restore-defaults'] == true){
+        if(isset($_POST['restore-defaults']) && $_POST['restore-defaults'] == true && $this->args['restore'] == true){
             check_admin_referer('save_'.$this->args['option_name'], $this->args['option_name'].'_nonce');
-            update_option($this->args['option_name'], $this->get_default_values());
+            $newoptions = $this->get_default_values();
+            update_option($this->args['option_name'], $newoptions);
+            //save seperate fields if needed
+            foreach($this->sections as $section){
+                foreach($section['fields'] as $id => $field){
+                    if($field['seperate'] === true){
+                        update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
+                    }
+                }
+            }
             $option = get_option($this->args['option_name'] . '_meta' );
             $option['options-updated'] = time();
             update_option($this->args['option_name'] . '_meta', $option);
             add_action('admin_notices', $this->provide('settings_default_updated'));
+            add_action('network_admin_notices', $this->provide('settings_default_updated'));
         }elseif(isset($_POST[$this->args['option_name']])){
             check_admin_referer('save_'.$this->args['option_name'], $this->args['option_name'].'_nonce');
             $options = $_POST[$this->args['option_name']];
-            $newoptions = $this->remove_clones($_POST[$this->args['option_name']]);
+            $newoptions = apply_filters('fluent/options/page/'.$this->args['option_name'].'/save', $this->remove_clones($_POST[$this->args['option_name']]));
             update_option($this->args['option_name'], $newoptions);
+            //save seperate fields if needed
+            foreach($this->sections as $section){
+                foreach($section['fields'] as $id => $field){
+                    if($field['seperate'] === true){
+                        update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
+                    }
+                }
+            }
             $option = get_option($this->args['option_name'] . '_meta' );
             $option['options-updated'] = time();
             update_option($this->args['option_name'] . '_meta', $option);
             add_action('admin_notices', $this->provide('settings_updated'));
+            add_action('network_admin_notices', $this->provide('settings_updated'));
+            do_action('fluent/options/page/'.$this->args['option_name'].'/save', $newoptions);
         }
         
         //re run prepare sections to ensure the options are set
@@ -197,14 +230,9 @@ class Fluent_Options_Page extends Fluent_Options{
         add_filter('screen_settings', $this->provide('add_screen_settings'));
         
         $this->load_assets();
-        
-        wp_localize_script( 'fluent-options-js', 'fluent', array(
-            'context' => 'page',
-            'L10n' => array(
-                'warning_defaults' => __('Are you sure?', $this->domain)
-            ),
-            'required' => $this->get_required_js()
-        ) );
+        $this->localize_script(array(
+            'context' => 'page'
+        ));
         
         add_meta_box( 'submitdiv', __( 'Details', $this->domain ), $this->provide( 'save_box_content' ), get_current_screen(), 'side', 'high' );
         
@@ -236,7 +264,8 @@ class Fluent_Options_Page extends Fluent_Options{
      * @return none
      */
     public function settings_updated(){
-        echo '<div class="updated"><p><strong>'.__('Settings saved.', $this->domain).'</strong></p></div>';   
+        echo '<div class="updated"><p><strong>'.apply_filters('fluent/options/page/'.$this->args['option_name'].'/saved/message', $this->args['messages']['saved']).'</strong></p></div>';
+        do_action('fluent/options/page/'.$this->args['option_name'].'/saved/messages', $this);
     }
     
     /**
@@ -247,7 +276,8 @@ class Fluent_Options_Page extends Fluent_Options{
      * @return none
      */
     public function settings_default_updated(){
-        echo '<div class="updated info"><p><strong>'.__('Settings reset to defaults.', $this->domain).'</strong></p></div>';   
+        echo '<div class="updated info"><p><strong>'.apply_filters('fluent/options/page/'.$this->args['option_name'].'/restore/message', $this->args['messages']['restore']).'</strong></p></div>'; 
+        do_action('fluent/options/page/'.$this->args['option_name'].'/restore/messages', $this); 
     }
     
     /**
@@ -312,20 +342,24 @@ class Fluent_Options_Page extends Fluent_Options{
             
         $updated = ( isset($option['options-updated']) ) ? date(get_option('date_format') . ' ' . get_option('time_format'), $option['options-updated']) : __('Never', $this->domain);
         
-        echo '<div class="submitbox" id="submitpost">
-                <div id="minor-publishing">
+        echo '<div class="submitbox" id="submitpost">'.
+                (($this->args['show_updated'] == true) ? '<div id="minor-publishing">
                 <div id="misc-publishing-actions">
                     <div class="misc-pub-section curtime misc-pub-curtime"><span id="timestamp">
                         Last Updated: <b>' . $updated . '</b></span>
                     </div>
                 </div>
                 <div class="clear"></div>
-            </div>
+            </div>' : '').
+
+                (($this->args['messages']['save_box'] != '') ? '<div class="misc-pub-section fluent-options-save-box-message">'.$this->args['messages']['save_box'].'</div>' : '')
+
+
                 
-            <div id="major-publishing-actions">
-                <div id="delete-action"><a class="submitdelete deletion options-restore-default" href="#">' . __( 'Restore Defaults', $this->domain ) . '</a></div>
+            .'<div id="major-publishing-actions">'.
+                (($this->args['restore'] == true) ? '<div id="delete-action"><a class="submitdelete deletion options-restore-default" href="#">' . __( 'Restore Defaults', $this->domain ) . '</a></div>' : '')
             
-                <div id="publishing-action"><span class="spinner"></span>'.get_submit_button( __( 'Save Options', $this->domain ), 'primary large', 'fluent[save]', false).'</div>
+                .'<div id="publishing-action"><span class="spinner"></span>'.get_submit_button( apply_filters('fluent/options/page/'.$this->args['option_name'].'/save/button', $this->args['messages']['save_button']), 'primary large', 'fluent[save]', false).'</div>
                 <div class="clear"></div>
             </div>
         </div>';

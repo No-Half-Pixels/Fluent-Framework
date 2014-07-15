@@ -4,17 +4,23 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 add_action('fluent/options/field/group/render', array('Fluent_Group_Field', 'render'), 1, 2);
 add_filter('fluent/options/field/group/schema', array('Fluent_Group_Field', 'schema'), 1, 2);
 add_filter('fluent/options/field/group/default', array('Fluent_Group_Field', 'default_value'), 1, 2);
+add_action('fluent/options/field/group/enqueue', array('Fluent_Group_Field', 'enqueue'));
 
 /**
  * Fluent_Group_Field repeatable, nestable groups of fields.
  */
 class Fluent_Group_Field extends Fluent_Field{
+
+    /**
+     * @var string $version Class version.
+     */
+    public $version = '1.0.1';
     
     /**
      * Returns the default field data.
@@ -32,6 +38,23 @@ class Fluent_Group_Field extends Fluent_Field{
             'show_headers' => true,
             'add_row_text' => __('Add Row', $self->domain)
         );
+    }
+
+    /**
+     * Enqueue or register styles and scripts to be used when the field is rendered.
+     *
+     * @since 1.0.0
+     *
+     * @param array $data field data.
+     *
+     * @param array $field_data locations and other data for the field type.
+     */
+    public static function enqueue( $data = array(), $field_data = array() ){
+        foreach($data['fields'] as $k => $field){
+            if(isset(Fluent_Options::$field_types[$field['type']])){
+                do_action('fluent/options/field/'.$field['type'].'/enqueue', $field, Fluent_Options::$field_types[$field['type']]);
+            }
+        }
     }
     
     /**
