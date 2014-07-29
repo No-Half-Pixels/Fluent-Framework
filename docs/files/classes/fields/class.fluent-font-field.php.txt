@@ -19,7 +19,7 @@ class Fluent_Font_Field extends Fluent_Field{
     /**
      * @var string $version Class version.
      */
-    public $version = '1.0.0';
+    public $version = '1.0.1';
 
     /**
      * @var array $font_list proccessed font list.
@@ -78,8 +78,8 @@ class Fluent_Font_Field extends Fluent_Field{
         $data = self::data_setup($data);
         return array(
             'font-family' => '',
-            'font-size' => '',
-            'line-height' => '',
+            'font-size' => '20',
+            'line-height' => '24',
             'color' => ''
         );
     }
@@ -199,7 +199,7 @@ class Fluent_Font_Field extends Fluent_Field{
                 echo '</td>';
             echo '</tr>';
         echo '</table>';
-        echo '<div class="font-preview" style="background: #f9f9f9;padding:10px;font-family: '.$data['value']['font-family'].';line-height: '.$data['value']['line-height'].$data['units'].';font-size: '.$data['value']['font-size'].$data['units'].';color: '.$data['value']['color'].';">1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z</div>';
+        echo '<div class="font-preview" style="background: #f9f9f9;padding:20px 20px 20px 40px;font-family: '.$data['value']['font-family'].';line-height: '.$data['value']['line-height'].$data['units'].';font-size: '.$data['value']['font-size'].$data['units'].';color: '.$data['value']['color'].';"><div class="bg-switcher"><span class="dashicons dashicons-visibility"></span></div>1 2 3 4 5 6 7 8 9 0 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z</div>';
     }
     
 }

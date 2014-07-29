@@ -41,6 +41,7 @@ class Fluent_Color_Field extends Fluent_Field{
     public static function enqueue( $data = array(), $field_data = array() ){
         wp_enqueue_style( 'wp-color-picker' );
         wp_enqueue_script( 'wp-color-picker' );
+        wp_enqueue_script('underscore');
     }
     
     /**

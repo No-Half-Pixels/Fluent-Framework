@@ -4,7 +4,7 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 /**
@@ -15,7 +15,7 @@ class Fluent_Options_Page extends Fluent_Options{
     /**
      * @var string $version Class version.
      */
-    public $version = '1.0.1';
+    public $version = '1.0.2';
     
     /**
      * @var $page Fluent_Page instance. If supplied the Options class should be used in page context and we use this to register the output we need on the page.
@@ -53,15 +53,33 @@ class Fluent_Options_Page extends Fluent_Options{
             
         $this->page = new Fluent_Page( $this->args['page_args'] );
         
-        $this->options = get_option($this->args['option_name']);
+        $this->options = $this->get_option($this->args['option_name']);
     
         $this->prepare_sections($sections);
     
         add_action('fluent/page/'.$this->page->args['slug'].'/load', $this->provide('load_page'));
         add_action('fluent/page/'.$this->page->args['slug'].'/render', $this->provide('render_page'));
-        
-        add_filter( 'option_' . $this->args['option_name'], $this->provide( 'format_option' ) );
+
+        if(isset($this->args['page_args']['network']) && $this->args['page_args']['network'] == true){
+            add_filter( 'site_option_' . $this->args['option_name'], $this->provide( 'format_option' ) );
+        }else{
+            add_filter( 'option_' . $this->args['option_name'], $this->provide( 'format_option' ) );
+        }
             
+    }
+
+    private function get_option($option_name, $default_value = false, $use_cache = true){
+        if(isset($this->args['page_args']['network']) && $this->args['page_args']['network'] == true){
+            return get_site_option($option_name, $default_value, $use_cache);
+        }
+        return get_option($option_name, $default_value);
+    }
+
+    private function update_option($option_name, $value){
+        if(isset($this->args['page_args']['network']) && $this->args['page_args']['network'] == true){
+            return update_site_option($option_name, $value);
+        }
+        return update_option($option_name, $value);
     }
     
     /**
@@ -113,7 +131,7 @@ class Fluent_Options_Page extends Fluent_Options{
       */
     protected function prepare_sections($sections, $id = null, $context = null){
 
-        $this->options = get_option($this->args['option_name']);
+        $this->options = $this->get_option($this->args['option_name']);
         if(!$this->options || $this->options == ''){
             $this->options = $this->get_default_values();
         }
@@ -187,36 +205,36 @@ class Fluent_Options_Page extends Fluent_Options{
         if(isset($_POST['restore-defaults']) && $_POST['restore-defaults'] == true && $this->args['restore'] == true){
             check_admin_referer('save_'.$this->args['option_name'], $this->args['option_name'].'_nonce');
             $newoptions = $this->get_default_values();
-            update_option($this->args['option_name'], $newoptions);
+            $this->update_option($this->args['option_name'], $newoptions);
             //save seperate fields if needed
             foreach($this->sections as $section){
                 foreach($section['fields'] as $id => $field){
                     if($field['seperate'] === true){
-                        update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
+                        $this->update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
                     }
                 }
             }
             $option = get_option($this->args['option_name'] . '_meta' );
             $option['options-updated'] = time();
-            update_option($this->args['option_name'] . '_meta', $option);
+            $this->update_option($this->args['option_name'] . '_meta', $option);
             add_action('admin_notices', $this->provide('settings_default_updated'));
             add_action('network_admin_notices', $this->provide('settings_default_updated'));
         }elseif(isset($_POST[$this->args['option_name']])){
             check_admin_referer('save_'.$this->args['option_name'], $this->args['option_name'].'_nonce');
             $options = $_POST[$this->args['option_name']];
             $newoptions = apply_filters('fluent/options/page/'.$this->args['option_name'].'/save', $this->remove_clones($_POST[$this->args['option_name']]));
-            update_option($this->args['option_name'], $newoptions);
+            $this->update_option($this->args['option_name'], $newoptions);
             //save seperate fields if needed
             foreach($this->sections as $section){
                 foreach($section['fields'] as $id => $field){
                     if($field['seperate'] === true){
-                        update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
+                        $this->update_option($this->args['option_name'].'_'.$id, $newoptions[$id]);
                     }
                 }
             }
-            $option = get_option($this->args['option_name'] . '_meta' );
+            $option = $this->get_option($this->args['option_name'] . '_meta' );
             $option['options-updated'] = time();
-            update_option($this->args['option_name'] . '_meta', $option);
+            $this->update_option($this->args['option_name'] . '_meta', $option);
             add_action('admin_notices', $this->provide('settings_updated'));
             add_action('network_admin_notices', $this->provide('settings_updated'));
             do_action('fluent/options/page/'.$this->args['option_name'].'/save', $newoptions);
@@ -338,7 +356,7 @@ class Fluent_Options_Page extends Fluent_Options{
      */
     public function save_box_content(){
         
-        $option = get_option($this->args['option_name'] . '_meta');
+        $option = $this->get_option($this->args['option_name'] . '_meta');
             
         $updated = ( isset($option['options-updated']) ) ? date(get_option('date_format') . ' ' . get_option('time_format'), $option['options-updated']) : __('Never', $this->domain);
         

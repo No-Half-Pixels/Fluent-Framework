@@ -4,7 +4,7 @@ Plugin Name: Fluent Framework
 Plugin URI: http://no-half-pixels.github.io/Fluent-Framework/
 Description: Fluent Framework is a WordPress Plugin/Framework which allows you to create and manage options pages, meta boxes, author meta, taxonomy meta and much more.
 Author: No Half Pixels Ltd
-Version: 1.0.2
+Version: 1.0.5
 Author URI: http://nohalfpixels.com
 Text Domain: fluent
 */
@@ -31,6 +31,10 @@ define( 'FLUENT_FILE', __FILE__ );
 
 //load base class
 require dirname(FLUENT_FILE) . '/classes/class.fluent-base.php';
+//load base class
+require dirname(FLUENT_FILE) . '/classes/class.fluent-store.php';
+//load support class
+require dirname(FLUENT_FILE) . '/classes/class.fluent-support.php';
 //load page class
 require dirname(FLUENT_FILE) . '/classes/class.fluent-page.php';
 //load options classes
@@ -216,14 +220,14 @@ Fluent_Options::register_field_type(array(
     'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-radio-img-field.php',
     'assets_path' => Fluent_Base::$url . 'assets/fields/radio-img/'
 ));
-/*
+
 Fluent_Options::register_field_type(array(
-    'type' => 'search',
-    'class_name' => 'Fluent_Search_Field',
-    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-search-field.php',
-    'assets_path' => Fluent_Base::$url . 'assets/fields/search/'
+    'type' => 'ace',
+    'class_name' => 'Fluent_Ace_Field',
+    'path' => dirname(FLUENT_FILE) . '/classes/fields/class.fluent-ace-field.php',
+    'assets_path' => Fluent_Base::$url . 'assets/fields/ace/'
 ));
-*/
+
 if(defined('FLUENT_DEMO') && FLUENT_DEMO == true){
     require dirname(FLUENT_FILE) . '/example-usage.php';
 }

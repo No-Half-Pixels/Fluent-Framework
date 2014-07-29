@@ -329,49 +329,49 @@ class Fluent_Post_Type extends Fluent_Base{
     public static function post_update_messages($messages = array()){
 
     	$post             = get_post();
-		$post_type        = get_post_type( $post );
-		$post_type_object = get_post_type_object( $post_type );
+  		$post_type        = get_post_type( $post );
+  		$post_type_object = get_post_type_object( $post_type );
 
-		if(in_array($post_type, self::$post_types)){
-			return $messages;
-		}
-		$messages = self::$post_types[$post_type]['messages'];
+      if(!isset(self::$post_types[$post_type])){
+        return $messages;
+      }
+  		$_messages = self::$post_types[$post_type]['messages'];
 
-		//create self to get text domain
-		$self = new Fluent_Base;
+  		//create self to get text domain
+  		$self = new Fluent_Base;
 
-		$messages[$post_type] = array(
-			0  => '', // Unused. Messages start at index 1.
-			1  => sprintf($messages[1], $post_type_object->labels->singular_name),
-			2  => $messages[2],
-			3  => $messages[3],
-			4  => sprintf($messages[4], $post_type_object->labels->singular_name),
-			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( $messages[5], $post_type_object->labels->singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => sprintf($messages[6], $post_type_object->labels->singular_name),
-			7  => sprintf($messages[7], $post_type_object->labels->singular_name),
-			8  => sprintf($messages[8], $post_type_object->labels->singular_name),
-			9  => sprintf(
-				$messages[9],
-				$post_type_object->labels->singular_name,
-				date_i18n( __( 'M j, Y @ G:i', $self->domain ), strtotime( $post->post_date ) )
-			),
-			10 => sprintf($messages[10], $post_type_object->labels->singular_name)
-		);
+  		$messages[$post_type] = array(
+  			0  => '', // Unused. Messages start at index 1.
+  			1  => sprintf($_messages[1], $post_type_object->labels->singular_name),
+  			2  => $_messages[2],
+  			3  => $_messages[3],
+  			4  => sprintf($_messages[4], $post_type_object->labels->singular_name),
+  			/* translators: %s: date and time of the revision */
+  			5  => isset( $_GET['revision'] ) ? sprintf( $messages[5], $post_type_object->labels->singular_name, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+  			6  => sprintf($_messages[6], $post_type_object->labels->singular_name),
+  			7  => sprintf($_messages[7], $post_type_object->labels->singular_name),
+  			8  => sprintf($_messages[8], $post_type_object->labels->singular_name),
+  			9  => sprintf(
+  				$_messages[9],
+  				$post_type_object->labels->singular_name,
+  				date_i18n( __( 'M j, Y @ G:i', $self->domain ), strtotime( $post->post_date ) )
+  			),
+  			10 => sprintf($_messages[10], $post_type_object->labels->singular_name)
+  		);
 
-		if ( $post_type_object->publicly_queryable ) {
-			$permalink = get_permalink( $post->ID );
+  		if ( $post_type_object->publicly_queryable ) {
+  			$permalink = get_permalink( $post->ID );
 
-			$view_link = sprintf( ' <a href="%s">%s %s</a>', esc_url( $permalink ), __( 'View', $self->domain ), strtolower($post_type_object->labels->singular_name) );
-			$messages[ $post_type ][1] .= $view_link;
-			$messages[ $post_type ][6] .= $view_link;
-			$messages[ $post_type ][9] .= $view_link;
+  			$view_link = sprintf( ' <a href="%s">%s %s</a>', esc_url( $permalink ), __( 'View', $self->domain ), strtolower($post_type_object->labels->singular_name) );
+  			$messages[ $post_type ][1] .= $view_link;
+  			$messages[ $post_type ][6] .= $view_link;
+  			$messages[ $post_type ][9] .= $view_link;
 
-			$preview_permalink = add_query_arg( 'preview', 'true', $permalink );
-			$preview_link = sprintf( ' <a target="_blank" href="%s">%s %s</a>', esc_url( $preview_permalink ), __( 'Preview', $self->domain ), strtolower($post_type_object->labels->singular_name) );
-			$messages[ $post_type ][8]  .= $preview_link;
-			$messages[ $post_type ][10] .= $preview_link;
-		}
+  			$preview_permalink = add_query_arg( 'preview', 'true', $permalink );
+  			$preview_link = sprintf( ' <a target="_blank" href="%s">%s %s</a>', esc_url( $preview_permalink ), __( 'Preview', $self->domain ), strtolower($post_type_object->labels->singular_name) );
+  			$messages[ $post_type ][8]  .= $preview_link;
+  			$messages[ $post_type ][10] .= $preview_link;
+  		}
 
     	return $messages;
 

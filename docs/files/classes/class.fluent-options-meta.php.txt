@@ -4,7 +4,7 @@
  *
  * @package Fluent
  * @since 1.0.0
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 /**
@@ -15,7 +15,7 @@ class Fluent_Options_Meta extends Fluent_Options{
     /**
      * @var string $version Class version.
      */
-    public $version = '1.0.1';
+    public $version = '1.0.2';
     
     /**
      * __construct() parse arguments supplied, setup framework options class.
@@ -73,9 +73,7 @@ class Fluent_Options_Meta extends Fluent_Options{
             'option_name'   => 'option_name',
             'dev_mode'      => false,
             'sections'      => array(),
-            'post_types'    => array(
-                'post'
-            ),
+            'post_types'    => array(),
             'default_layout' => 'options-normal'
         );
         

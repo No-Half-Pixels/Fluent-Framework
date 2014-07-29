@@ -251,6 +251,26 @@ $sections['advanced'] = array(
             'sub_title' => __('This is a sub title', 'fluent'),
             'description' => __('This allows you to select a font and styles.', 'fluent')
         ),
+        'ace' => array(
+            'type' => 'ace',
+            'title' => __('Code Editor Field (css)', 'fluent'),
+            'sub_title' => __('This is a sub title', 'fluent'),
+            'description' => __('This field is generated using the Ace code editor library. You can choose themes per instance.<br/>Modes available: <code>css|html|javascript|json|less|markdown|php|plain_text|sass|scss|text</code>', 'fluent'),
+            'ace' => array(
+                'theme' => 'monokai',//default - see all themes here: https://github.com/ajaxorg/ace/tree/master/lib/ace/theme
+                'mode' => 'css'//default - available: css|html|javascript|json|less|markdown|php|plain_text|sass|scss|text
+            )
+        ),
+        'ace2' => array(
+            'type' => 'ace',
+            'title' => __('Code Editor Field (js)', 'fluent'),
+            'sub_title' => __('This is a sub title', 'fluent'),
+            'description' => __('This field is generated using the Ace code editor library. With the <code>chrome</code> theme set. See all themes here: <a href="https://github.com/ajaxorg/ace/tree/master/lib/ace/theme" target="_blank">https://github.com/ajaxorg/ace/tree/master/lib/ace/theme</a>', 'fluent'),
+            'ace' => array(
+                'theme' => 'chrome',
+                'mode' => 'javascript'
+            )
+        ),
         'custom' => array(
             'type' => 'custom',
             'title' => __('Custom Field', 'fluent'),
@@ -261,6 +281,19 @@ $sections['advanced'] = array(
                 'default' => function($default, $data){return 'a default value';},
                 'enqueue' => function($data, $field_data){},
                 'schema' => function($value, $data){}
+            ),
+        ),
+        'custom-support' => array(
+            'type' => 'custom',
+            'title' => __('Support Field', 'fluent'),
+            'sub_title' => __('This is a sub title', 'fluent'),
+            'description' => __('Here we are using the custom field type to render an instance of the <code>Fluent_Support</code> class.', 'fluent'),
+            'callbacks' => array(
+                'render' => function($data, $object){
+                    //fetch the support form and display it
+                    $support = Fluent_Store::get('support');
+                    $support->the_form();
+                },
             ),
         ),
     ),
@@ -439,11 +472,6 @@ $sections['conditonal_fields'] = array(
             'title' => __('Text Field', 'fluent'),
             'sub_title' => __('This is a sub title', 'fluent'),
             'description' => __('This field is only shown if the above two selects have <code>Yes</code> and <code>No</code> or <code>Maybe</code> and <code>Maybe</code> selected.<br/>To enable the next field this field must contain the word <code>WordPress</code>.', 'fluent'),
-            'options' => array(
-            	'yes' => __('Yes', 'fluent'),
-            	'maybe' => __('Maybe', 'fluent'),
-            	'no' => __('No', 'fluent')
-            ),
             'default' => 'no',
             'conditions' => array(
             	array(
@@ -892,15 +920,19 @@ $args = array(
 );
 $panel = new Fluent_Options_Page( $args, $sections );
 
+//optionall store the panel instance for later access
+Fluent_Store::set('panel', $panel);
+
 //load meta boxes
 $args = array(
     'dev_mode' => true,
     'option_name' => 'the_option_name',
-    'post-types' => array(
-        'post'
+    'post_types' => array(
+        'fluent_post_type'
     )
 );
-$metabox = new Fluent_Options_Meta( $args, $sections );
+//you can create and store in one line too
+Fluent_Store::set('metaboxes', new Fluent_Options_Meta( $args, $sections ));
 
 //load user meta
 $args = array(
@@ -915,7 +947,7 @@ $args = array(
     'dev_mode' => true,
     'option_name' => 'the_option_name',
     'taxonomies' => array(
-        'category'
+        'fluent_taxonomy'
     )
 );
 unset($sections['group']);//styling of groups doesnt work too well in the taxonomy page, it works but its advised against
@@ -1046,6 +1078,47 @@ new Fluent_Taxonomy($name, array(
 new Fluent_Taxonomy('Simple Taxonomy', array('post_types' => array('simple_post_type')));
 
 
+//create an instance of the support form and attach it to the store, this is used in a custom field type in the advanced section, but it can be put anywhere, in a help tab, dashboard widget, its really up to you.
+$support = new Fluent_Support(array(
+    'id' => 'fluent-framework',//must be unique, best to be the plugin/theme name from which you are using it
+    'email' => 'your@emailaddress.com',//where to send the messages
+    'subject' => __('Support Request', 'domain'),//the email subject sent to you
+    'data' => array(//which data sets do you want checked on load - defaults are below
+      'wordpress' => true,//version-multisite
+      'plugins' => true,//active plugins and version
+      'theme' => true,//active theme and version
+      'php' => false,//phpinfo
+      'server' => false//$_SERVER variable
+    ),
+    'success_message' => __('Your message has been sent successfully.', 'domain')//optionally provide a custom success message
+));
+//we need to store this so we can use it later on, make sure you use unique keys here too.
+Fluent_Store::set('support', $support);
 
+//heres an example adding the form as a dashboard widget
+add_action('wp_dashboard_setup', function(){
+    wp_add_dashboard_widget('example_fluent_support_form_widget', 'Example Fluent Support Form Widget', function(){
+        //fetch the object from the store
+        $support = Fluent_Store::get('support');
+        //render the form
+        $support->the_form();
+        //you could also echo the form using the get_** function
+        //echo $support->get_form();
+    });
+});
 
+//heres another example adding it to a help tab
+add_action('admin_head', function(){
+    $screen = get_current_screen();
+    $screen->add_help_tab( array( 
+       'id' => 'fluent-demo-support-form-help-tab',
+       'title' => __('Fluent Support Form', 'domain'),
+       'callback' => function(){
+            //fetch the object from the store
+            $support = Fluent_Store::get('support');
+            //render the form
+            $support->the_form();
+       }
+    ) );
+});
 
